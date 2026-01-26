@@ -1,0 +1,11 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .logo-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 32px; fill: #ff0000; }
+      .logo-dot { fill: #ff0000; }
+    </style>
+  </defs>
+  <circle class="logo-dot" cx="100" cy="40" r="12"/>
+  <path class="logo-dot" d="M 60 80 Q 80 60 100 75 Q 120 60 140 80 Q 130 100 100 110 Q 70 100 60 80" />
+  <text class="logo-text" x="50" y="150">airtel</text>
+</svg>

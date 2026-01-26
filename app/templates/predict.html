@@ -1,0 +1,458 @@
+{% extends "base.html" %}
+
+{% block title %}Predict Churn - Telecom{% endblock %}
+
+{% block content %}
+<style>
+    .form-section { background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #1a73e8; }
+    .form-label { font-weight: 600; color: #333; display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+    .help-text { font-size: 0.85rem; color: #666; margin-top: 4px; font-style: italic; }
+    .form-control, .form-select { border: 1px solid #ddd; border-radius: 6px; padding: 10px 12px; }
+    .form-control:focus, .form-select:focus { border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1); }
+    .required-badge { color: #f44336; font-weight: bold; }
+    .info-box { background: #e3f2fd; border-left: 4px solid #1a73e8; padding: 15px; border-radius: 6px; margin-bottom: 20px; color: #1a73e8; }
+    .result-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 8px; margin-top: 15px; }
+</style>
+
+<div style="background-color: #f8f9fa; min-height: 100vh; padding: 30px 15px;">
+    <div class="container" style="max-width: 1200px;">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 35px;">
+            <h1 style="font-size: 2.2rem; color: #333; margin-bottom: 8px;">🎯 Customer Churn Prediction</h1>
+            <p style="color: #666; font-size: 1rem; margin-bottom: 20px;">Advanced ML Model - Predict likelihood of customer leaving</p>
+            <div class="info-box" style="text-align: left; max-width: 600px; margin: 0 auto;">
+                <strong>💡 How to use:</strong> Fill in customer information → Click "Predict" → Get risk assessment & recommendations
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Prediction Form -->
+                <div style="background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <form id="predictionForm" onsubmit="submitPrediction(event)" novalidate>
+                        
+                        <!-- Section 0: Customer ID -->
+                        <div class="form-section">
+                            <h5 style="color: #1a73e8; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">🆔 Customer ID</h5>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label"><span class="required-badge">*</span> Customer ID</label>
+                                    <input type="text" name="customerID" class="form-control" placeholder="Enter unique customer identifier (e.g., CUST001)" required>
+                                    <div class="help-text">Unique identifier for this customer account</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Section 1: Demographics -->
+                        <div class="form-section">
+                            <h5 style="color: #1a73e8; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">👤 Customer Demographics</h5>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Gender</label>
+                                    <select name="gender" class="form-select" required>
+                                        <option value="">👤 Choose customer gender...</option>
+                                        <option value="Male">♂️ Male</option>
+                                        <option value="Female">♀️ Female</option>
+                                    </select>
+                                    <div class="help-text">Customer's gender (impacts retention patterns)</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Senior Citizen</label>
+                                    <select name="SeniorCitizen" class="form-select" required>
+                                        <option value="">📊 Is customer 65+ years?</option>
+                                        <option value="0">❌ No (Under 65)</option>
+                                        <option value="1">✅ Yes (65 or above)</option>
+                                    </select>
+                                    <div class="help-text">Senior customers have different churn patterns</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Has Partner</label>
+                                    <select name="Partner" class="form-select" required>
+                                        <option value="">👥 Is customer married/partnered?</option>
+                                        <option value="Yes">💑 Yes</option>
+                                        <option value="No">🧑 No</option>
+                                    </select>
+                                    <div class="help-text">Partner status affects account stability</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Has Dependents</label>
+                                    <select name="Dependents" class="form-select" required>
+                                        <option value="">👨‍👩‍👧 Does customer have dependents?</option>
+                                        <option value="Yes">👨‍👩‍👧‍👦 Yes (Has dependents)</option>
+                                        <option value="No">🧑‍🤝‍🧑 No dependents</option>
+                                    </select>
+                                    <div class="help-text">Dependents typically mean stable customer</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 2: Services -->
+                        <div class="form-section">
+                            <h5 style="color: #1a73e8; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">📱 Internet & Phone Services</h5>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Phone Service</label>
+                                    <select name="PhoneService" class="form-select" required>
+                                        <option value="">📞 Does customer have phone service?</option>
+                                        <option value="Yes">✅ Yes - Has phone service</option>
+                                        <option value="No">❌ No phone service</option>
+                                    </select>
+                                    <div class="help-text">Landline phone service subscription</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Multiple Phone Lines</label>
+                                    <select name="MultipleLines" class="form-select" required>
+                                        <option value="">☎️ Multiple lines status?</option>
+                                        <option value="Yes">✅ Yes - Multiple lines</option>
+                                        <option value="No">❌ Single line only</option>
+                                        <option value="No phone service">⊘ N/A - No phone service</option>
+                                    </select>
+                                    <div class="help-text">Multiple phone lines for family/business</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Internet Service Type</label>
+                                    <select name="InternetService" class="form-select" required>
+                                        <option value="">🌐 What internet type?</option>
+                                        <option value="DSL">📶 DSL (Reliable, moderate speed)</option>
+                                        <option value="Fiber optic">⚡ Fiber Optic (Fast, premium)</option>
+                                        <option value="No">❌ No Internet Service</option>
+                                    </select>
+                                    <div class="help-text">Important: Fiber has higher churn rate!</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Online Security</label>
+                                    <select name="OnlineSecurity" class="form-select" required>
+                                        <option value="">🔒 Online security service?</option>
+                                        <option value="Yes">✅ Yes - Protected</option>
+                                        <option value="No">❌ No protection</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">Anti-virus & malware protection</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Online Backup</label>
+                                    <select name="OnlineBackup" class="form-select" required>
+                                        <option value="">💾 Cloud backup service?</option>
+                                        <option value="Yes">✅ Yes - Backed up</option>
+                                        <option value="No">❌ No backup</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">Automatic cloud data backup</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Device Protection</label>
+                                    <select name="DeviceProtection" class="form-select" required>
+                                        <option value="">🛡️ Device protection plan?</option>
+                                        <option value="Yes">✅ Yes - Protected</option>
+                                        <option value="No">❌ No protection</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">Covers repairs for phones/tablets</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Tech Support</label>
+                                    <select name="TechSupport" class="form-select" required>
+                                        <option value="">👨‍💻 Tech support service?</option>
+                                        <option value="Yes">✅ Yes - 24/7 Support</option>
+                                        <option value="No">❌ No tech support</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">24/7 technical assistance (high retention!)</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Streaming TV</label>
+                                    <select name="StreamingTV" class="form-select" required>
+                                        <option value="">📺 TV streaming service?</option>
+                                        <option value="Yes">✅ Yes - Streaming TV</option>
+                                        <option value="No">❌ No streaming</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">Entertainment streaming add-on</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Streaming Movies</label>
+                                    <select name="StreamingMovies" class="form-select" required>
+                                        <option value="">🎬 Movie streaming service?</option>
+                                        <option value="Yes">✅ Yes - Premium movies</option>
+                                        <option value="No">❌ No movies</option>
+                                        <option value="No internet service">⊘ N/A - No internet</option>
+                                    </select>
+                                    <div class="help-text">Premium movie streaming add-on</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 3: Billing & Contract -->
+                        <div class="form-section">
+                            <h5 style="color: #1a73e8; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">💳 Billing & Contract Terms</h5>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Contract Type</label>
+                                    <select name="Contract" class="form-select" required>
+                                        <option value="">📋 What's the contract type?</option>
+                                        <option value="Month-to-month">📅 Month-to-month (Most churn!)</option>
+                                        <option value="One year">📌 One year contract</option>
+                                        <option value="Two year">🔐 Two year contract (Stable)</option>
+                                    </select>
+                                    <div class="help-text">Month-to-month = highest churn risk</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Paperless Billing</label>
+                                    <select name="PaperlessBilling" class="form-select" required>
+                                        <option value="">📧 Uses paperless billing?</option>
+                                        <option value="Yes">✅ Yes - Digital bills</option>
+                                        <option value="No">📄 No - Paper bills</option>
+                                    </select>
+                                    <div class="help-text">Digital-savvy customers often stay longer</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="form-label"><span class="required-badge">*</span> Payment Method</label>
+                                    <select name="PaymentMethod" class="form-select" required>
+                                        <option value="">💰 How does customer pay?</option>
+                                        <option value="Electronic check">🔴 Electronic check (Higher churn)</option>
+                                        <option value="Mailed check">📬 Mailed check</option>
+                                        <option value="Bank transfer (automatic)">🏦 Bank transfer (Auto - Good!)</option>
+                                        <option value="Credit card (automatic)">💳 Credit card (Auto - Good!)</option>
+                                    </select>
+                                    <div class="help-text">Automatic payments = stronger commitment</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section 4: Charges -->
+                        <div class="form-section">
+                            <h5 style="color: #1a73e8; font-weight: bold; margin-bottom: 18px; display: flex; align-items: center; gap: 8px;">💰 Usage & Charges</h5>
+                            <div class="row g-3">
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Tenure (How long customer?)</label>
+                                    <input type="number" name="tenure" class="form-control" placeholder="e.g., 24" min="0" max="72" required>
+                                    <div class="help-text">Months customer has been with company (0-72 months)</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label class="form-label"><span class="required-badge">*</span> Monthly Bill</label>
+                                    <input type="number" name="MonthlyCharges" class="form-control" placeholder="e.g., 65.50" min="0" step="0.01" required>
+                                    <div class="help-text">Monthly service charge in USD</div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <label class="form-label"><span class="required-badge">*</span> Total Amount Paid</label>
+                                    <input type="number" name="TotalCharges" class="form-control" placeholder="e.g., 1570.00" min="0" step="0.01" required>
+                                    <div class="help-text">Total amount customer has paid since signup (Tenure × Avg Monthly Bill)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div style="margin-top: 30px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                            <button type="submit" class="btn btn-primary" id="predictBtn" style="padding: 12px; font-weight: 600; font-size: 1rem;">
+                                🎯 Predict Churn
+                            </button>
+                            <button type="button" class="btn btn-success" onclick="loadExample()" style="padding: 12px; font-weight: 600; font-size: 1rem;">
+                                📊 Load Example Data
+                            </button>
+                            <button type="reset" class="btn btn-outline-secondary" style="padding: 12px; font-weight: 600; font-size: 1rem;">
+                                🔄 Clear Form
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-lg-4">
+                <!-- Instructions Card -->
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px;">
+                    <h5 style="font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">📋 How to Use</h5>
+                    <ol style="margin: 0; padding-left: 20px; line-height: 1.8;">
+                        <li style="margin-bottom: 8px;">Fill in all customer details</li>
+                        <li style="margin-bottom: 8px;">Use "📊 Load Example" to see sample data</li>
+                        <li style="margin-bottom: 8px;">Click "🎯 Predict Churn" button</li>
+                        <li style="margin-bottom: 8px;">Get risk assessment instantly</li>
+                        <li>Review recommendations</li>
+                    </ol>
+                </div>
+
+                <!-- Key Factors Card -->
+                <div style="background: #fff3cd; border-left: 4px solid #ff9800; padding: 18px; border-radius: 8px; margin-bottom: 20px;">
+                    <h5 style="color: #ff9800; font-weight: bold; margin-bottom: 12px;">⚠️ Churn Risk Factors</h5>
+                    <ul style="color: #333; font-size: 0.9rem; line-height: 1.7; margin: 0; padding-left: 18px;">
+                        <li><strong>High Risk:</strong> Month-to-month contract, Fiber optic internet</li>
+                        <li><strong>High Risk:</strong> Electronic check payments</li>
+                        <li><strong>Protective:</strong> Tech support & online security services</li>
+                        <li><strong>Protective:</strong> Long tenure & automatic payments</li>
+                    </ul>
+                </div>
+
+                <!-- Results Card (Hidden by default) -->
+                <div id="resultBox" style="display: none;">
+                    <div class="result-card">
+                        <h5 style="margin-bottom: 18px; font-weight: bold; display: flex; align-items: center; gap: 8px;">✨ Prediction Results</h5>
+                        
+                        <div style="margin-bottom: 18px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">📊 Churn Probability</p>
+                            <div style="background: rgba(255,255,255,0.2); border-radius: 8px; overflow: hidden; height: 40px; margin-bottom: 6px;">
+                                <div id="probabilityBar" style="height: 100%; background: linear-gradient(90deg, #4caf50, #ff9800, #f44336); width: 0%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem;">0%</div>
+                            </div>
+                            <small style="opacity: 0.9;">What's the likelihood this customer will leave?</small>
+                        </div>
+
+                        <div style="margin-bottom: 18px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">🎯 Risk Category</p>
+                            <div id="riskLevel" style="padding: 12px; border-radius: 8px; text-align: center; color: white; font-weight: bold; background: rgba(255,255,255,0.2);">Calculating...</div>
+                        </div>
+
+                        <div style="background: rgba(255,255,255,0.15); padding: 15px; border-radius: 8px;">
+                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">💡 Recommended Actions</p>
+                            <p id="recommendation" style="margin: 0; font-size: 0.9rem; line-height: 1.6; opacity: 0.95;">Loading recommendations...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+async function submitPrediction(event) {
+    event.preventDefault();
+    console.log('🚀 Form submitted');
+    
+    const form = document.getElementById('predictionForm');
+    const btn = document.getElementById('predictBtn');
+    const resultBox = document.getElementById('resultBox');
+    
+    // Validate form
+    if (!form.checkValidity()) {
+        alert('⚠️ Please fill in all required fields correctly!');
+        return;
+    }
+    
+    // Disable button and show loading state
+    btn.disabled = true;
+    btn.textContent = '⏳ Analyzing customer data...';
+    btn.style.opacity = '0.7';
+    
+    try {
+        // Collect form data
+        const formData = new FormData(form);
+        const data = {};
+        
+        formData.forEach((value, key) => {
+            data[key] = isNaN(value) ? value : parseFloat(value);
+        });
+        
+        console.log('📤 Sending data:', data);
+        
+        // Send to API with timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        
+        const response = await fetch('/api/predict', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+            signal: controller.signal
+        });
+        
+        clearTimeout(timeoutId);
+        console.log('📥 Response status:', response.status);
+        
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Prediction failed. Please try again.');
+        }
+        
+        const result = await response.json();
+        console.log('✅ Result:', result);
+        
+        // Scroll to results
+        setTimeout(() => {
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+        
+        // Display results
+        displayPredictionResult(result);
+        
+    } catch (error) {
+        console.error('❌ Error:', error);
+        if (error.name === 'AbortError') {
+            alert('❌ Request timeout. Please check your connection and try again.');
+        } else {
+            alert('❌ Error: ' + error.message);
+        }
+    } finally {
+        btn.disabled = false;
+        btn.textContent = '🎯 Predict Churn';
+        btn.style.opacity = '1';
+    }
+}
+
+function displayPredictionResult(result) {
+    const probability = (result.churn_probability * 100).toFixed(2);
+    
+    // Show result box
+    document.getElementById('resultBox').style.display = 'block';
+    
+    // Update probability bar
+    const bar = document.getElementById('probabilityBar');
+    bar.style.width = '0%';
+    setTimeout(() => {
+        bar.style.transition = 'width 0.6s ease';
+        bar.style.width = probability + '%';
+        bar.textContent = probability + '%';
+    }, 50);
+    
+    // Update risk level
+    const riskLevel = document.getElementById('riskLevel');
+    const riskMap = {
+        'LOW': { bg: '#4caf50', icon: '🟢', text: 'LOW RISK - Customer likely to stay' },
+        'MEDIUM': { bg: '#ff9800', icon: '🟡', text: 'MEDIUM RISK - Monitor closely' },
+        'HIGH': { bg: '#f44336', icon: '🔴', text: 'HIGH RISK - Take action now!' }
+    };
+    
+    const riskStyle = riskMap[result.risk_category] || riskMap['MEDIUM'];
+    riskLevel.style.background = riskStyle.bg;
+    riskLevel.textContent = riskStyle.icon + ' ' + riskStyle.text;
+    riskLevel.style.fontSize = '0.95rem';
+    
+    // Update recommendation
+    document.getElementById('recommendation').textContent = result.suggestion;
+    
+    console.log('✨ Results displayed');
+}
+
+function loadExample() {
+    const example = {
+        customerID: 'CUST-001-2025',
+        gender: 'Male',
+        SeniorCitizen: '0',
+        Partner: 'Yes',
+        Dependents: 'No',
+        PhoneService: 'Yes',
+        MultipleLines: 'No',
+        InternetService: 'Fiber optic',
+        OnlineSecurity: 'No',
+        OnlineBackup: 'Yes',
+        DeviceProtection: 'No',
+        TechSupport: 'No',
+        StreamingTV: 'No',
+        StreamingMovies: 'No',
+        Contract: 'Month-to-month',
+        PaperlessBilling: 'Yes',
+        PaymentMethod: 'Electronic check',
+        tenure: '24',
+        MonthlyCharges: '65.50',
+        TotalCharges: '1570.00'
+    };
+    
+    Object.entries(example).forEach(([key, value]) => {
+        const field = document.querySelector(`[name="${key}"]`);
+        if (field) field.value = value;
+    });
+    
+    alert('Example data loaded! Click "Predict Churn" to test.');
+}
+</script>
+
+{% endblock %}

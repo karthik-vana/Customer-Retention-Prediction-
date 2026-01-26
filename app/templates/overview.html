@@ -1,0 +1,352 @@
+{% extends "base.html" %}
+
+{% block title %}Project Overview - Telecom Churn{% endblock %}
+
+{% block content %}
+<div class="main-content" style="background-color: #f8f9fa; min-height: 100vh; padding-bottom: 50px;">
+    <div class="container py-5">
+        <!-- Header -->
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-size: 2.5rem; color: #333; margin-bottom: 10px;">Project Overview</h1>
+            <p style="color: #666; font-size: 1.1rem;">Understanding the complete ML pipeline</p>
+        </div>
+
+        <!-- Project Summary -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">📊 Dataset</h5>
+                    <ul style="color: #666; margin: 0; padding-left: 20px;">
+                        <li>7,000+ customer records</li>
+                        <li>20+ features analyzed</li>
+                        <li>Telecom industry data</li>
+                        <li>Binary classification target</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">🎯 Objective</h5>
+                    <ul style="color: #666; margin: 0; padding-left: 20px;">
+                        <li>Predict customer churn</li>
+                        <li>Identify risk factors</li>
+                        <li>Enable retention strategies</li>
+                        <li>Maximize lifetime value</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6">
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(102, 126, 234, 0.3);">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">📈 Metrics</h5>
+                    <ul style="color: #666; margin: 0; padding-left: 20px;">
+                        <li>Primary: ROC-AUC Score</li>
+                        <li>Accuracy & Precision</li>
+                        <li>Recall & F1-Score</li>
+                        <li>Confusion Matrix</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pipeline Architecture -->
+        <div class="glass-card" style="border-radius: 15px; padding: 40px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 50px;">
+            <h2 style="color: #333; font-weight: 700; margin-bottom: 40px;">🏗️ ML Pipeline Architecture</h2>
+            
+            <div class="row g-3">
+                <!-- Step 1 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 1</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">EDA</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">Data exploration & visualization</p>
+                    </div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #764ba2, #f093fb); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 2</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Engineering</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">5 techniques per stage</p>
+                    </div>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 3</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Selection</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">15 techniques evaluated</p>
+                    </div>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #f5576c, #4facfe); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 4</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Balancing</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">5 balancing methods</p>
+                    </div>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 5</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Scaling</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">5 scaling techniques</p>
+                    </div>
+                </div>
+                
+                <!-- Step 6 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #00f2fe, #43e97b); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 6</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Training</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">5 ML models trained</p>
+                    </div>
+                </div>
+                
+                <!-- Step 6B -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #43e97b, #38f9d7); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 6B</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Tuning</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">3 tuning strategies</p>
+                    </div>
+                </div>
+                
+                <!-- Step 7 -->
+                <div class="col-12 col-md-6 col-lg-3">
+                    <div style="background: linear-gradient(135deg, #38f9d7, #667eea); color: white; padding: 25px; border-radius: 12px; text-align: center;">
+                        <h6 style="margin-bottom: 10px; font-size: 1.2rem;">Step 7</h6>
+                        <h5 style="margin-bottom: 10px; font-weight: 700;">Deployment</h5>
+                        <p style="margin: 0; font-size: 0.9rem;">Production deployment</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Pipeline Description -->
+        <div class="row g-4 mb-5">
+            <!-- Feature Engineering -->
+            <div class="col-lg-6">
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 20px;">⚙️ Feature Engineering (Step 2)</h5>
+                    
+                    <div style="color: #666; font-size: 0.95rem;">
+                        <p><strong style="color: #333;">Stage A: Missing Values</strong></p>
+                        <ul style="margin-top: 10px; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Mean/Median Imputation</li>
+                            <li>Mode Imputation</li>
+                            <li>KNN Imputation</li>
+                            <li>Forward/Backward Fill</li>
+                            <li>Model-based (MICE)</li>
+                        </ul>
+                        
+                        <p><strong style="color: #333;">Stage B: Categorical Encoding</strong></p>
+                        <ul style="margin-top: 10px; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Label Encoding</li>
+                            <li>One-Hot Encoding</li>
+                            <li>Target Encoding</li>
+                            <li>Frequency Encoding</li>
+                            <li>Ordinal Encoding</li>
+                        </ul>
+                        
+                        <p><strong style="color: #333;">Stage C: Numerical Transformation</strong></p>
+                        <ul style="margin-top: 10px; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Log Transformation</li>
+                            <li>Box-Cox Transform</li>
+                            <li>Yeo-Johnson Transform</li>
+                            <li>Standard Scaling</li>
+                            <li>Robust Scaling</li>
+                        </ul>
+                        
+                        <p><strong style="color: #333;">Stage D: Outlier Handling</strong></p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>IQR Method</li>
+                            <li>Z-Score Method</li>
+                            <li>Percentile Method</li>
+                            <li>Isolation Forest</li>
+                            <li>Winsorization</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature Selection & Balancing -->
+            <div class="col-lg-6">
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 30px;">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 20px;">🎯 Feature Selection (Step 3)</h5>
+                    
+                    <div style="color: #666; font-size: 0.95rem;">
+                        <p><strong style="color: #333;">Filter Methods</strong></p>
+                        <ul style="margin-top: 10px; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Variance Threshold</li>
+                            <li>Chi-Square Test</li>
+                            <li>Mutual Information</li>
+                            <li>ANOVA F-test</li>
+                            <li>Information Gain</li>
+                        </ul>
+                        
+                        <p><strong style="color: #333;">Correlation-Based Methods</strong></p>
+                        <ul style="margin-top: 10px; margin-bottom: 20px; padding-left: 20px;">
+                            <li>Pearson Correlation</li>
+                            <li>Spearman Correlation</li>
+                            <li>Kendall Correlation</li>
+                            <li>VIF (Variance Inflation)</li>
+                            <li>Heatmap Threshold</li>
+                        </ul>
+                        
+                        <p><strong style="color: #333;">Hypothesis Testing Methods</strong></p>
+                        <ul style="margin-top: 10px; padding-left: 20px;">
+                            <li>T-test (parametric)</li>
+                            <li>Chi-Square Test</li>
+                            <li>Mann-Whitney U (non-parametric)</li>
+                            <li>Kolmogorov-Smirnov Test</li>
+                            <li>Point-Biserial Correlation</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="glass-card" style="border-radius: 15px; padding: 30px; background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 20px;">⚖️ Data Balancing (Step 4)</h5>
+                    
+                    <div style="color: #666; font-size: 0.95rem;">
+                        <p style="margin-bottom: 15px;">Handles class imbalance with 5 techniques evaluated via 5-fold CV ROC-AUC:</p>
+                        <ul style="padding-left: 20px; margin: 0;">
+                            <li><strong style="color: #333;">Random Oversampling</strong> - Duplicates minority class</li>
+                            <li><strong style="color: #333;">Undersampling</strong> - Removes majority class samples</li>
+                            <li><strong style="color: #333;">SMOTE</strong> - Synthetic minority oversampling</li>
+                            <li><strong style="color: #333;">ADASYN</strong> - Adaptive synthetic sampling</li>
+                            <li><strong style="color: #333;">SMOTEENN</strong> - Combined approach</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Information -->
+        <div class="glass-card" style="border-radius: 15px; padding: 40px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255, 255, 255, 0.3); margin-bottom: 50px;">
+            <h2 style="color: #333; font-weight: 700; margin-bottom: 40px;">🤖 Machine Learning Models (Step 6)</h2>
+            
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">1. Logistic Regression</h6>
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Linear model for binary classification. Fast and interpretable baseline.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">2. Random Forest</h6>
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Ensemble of decision trees. Handles non-linearity well.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">3. XGBoost</h6>
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Gradient boosting model. State-of-the-art performance.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">4. Support Vector Machine</h6>
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Finds optimal hyperplane. Good for complex boundaries.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 25px; border-radius: 12px; border-left: 4px solid #667eea;">
+                        <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">5. K-Nearest Neighbors</h6>
+                        <p style="color: #666; margin: 0; font-size: 0.9rem;">Instance-based learning. Simple and effective baseline.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Evaluation Metrics -->
+        <div class="row g-4 mb-5">
+            <div class="col-12">
+                <div class="glass-card" style="border-radius: 15px; padding: 40px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255, 255, 255, 0.3);">
+                    <h3 style="color: #333; font-weight: 700; margin-bottom: 30px;">📊 Evaluation Metrics</h3>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">🎯 Primary Metric</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>ROC-AUC Score</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Measures overall model performance across all classification thresholds. Robust to class imbalance.</p>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">✅ Accuracy</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>Correct Predictions %</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Overall correctness of the model across both classes.</p>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">🎪 Precision</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>Predicted Churn Accuracy</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Of predicted churners, how many actually churned.</p>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">🔍 Recall</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>Actual Churn Detection %</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Of actual churners, how many were predicted correctly.</p>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">⚡ F1-Score</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>Precision-Recall Harmonic Mean</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Balanced measure of precision and recall.</p>
+                        </div>
+                        
+                        <div class="col-md-6 col-lg-4">
+                            <h6 style="color: #667eea; font-weight: 700; margin-bottom: 10px;">🔲 Confusion Matrix</h6>
+                            <p style="color: #333; font-size: 1.1rem; margin-bottom: 10px;"><strong>TP, TN, FP, FN</strong></p>
+                            <p style="color: #666; margin: 0; font-size: 0.9rem;">Detailed breakdown of prediction results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="glass-card" style="border-radius: 15px; padding: 40px; background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <h2 style="color: #333; font-weight: 700; margin-bottom: 30px;">🛠️ Technology Stack</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">ML & Data Science</h5>
+                    <ul style="color: #666; margin: 0; padding-left: 20px;">
+                        <li>Python 3.x</li>
+                        <li>scikit-learn 1.3.0</li>
+                        <li>pandas 2.0.3</li>
+                        <li>numpy 1.24.3</li>
+                        <li>XGBoost 2.0.0</li>
+                        <li>imbalanced-learn 0.11.0</li>
+                        <li>scikit-optimize 0.9.0</li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5 style="color: #667eea; font-weight: 700; margin-bottom: 15px;">Web & Deployment</h5>
+                    <ul style="color: #666; margin: 0; padding-left: 20px;">
+                        <li>Flask 2.3.3</li>
+                        <li>Bootstrap 5.3.0</li>
+                        <li>HTML5 & CSS3</li>
+                        <li>JavaScript (Vanilla)</li>
+                        <li>Gunicorn 21.2.0</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

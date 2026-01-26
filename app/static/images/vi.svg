@@ -1,0 +1,11 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .vi-red { fill: #ff0000; }
+      .vi-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 60px; fill: #ff0000; }
+    </style>
+  </defs>
+  <polygon class="vi-red" points="40,50 80,50 60,130 20,130"/>
+  <polygon class="vi-red" points="120,50 160,50 140,130 100,130"/>
+  <circle class="vi-red" cx="150" cy="160" r="15"/>
+</svg>

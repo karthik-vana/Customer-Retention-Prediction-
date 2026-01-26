@@ -1,0 +1,10 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .jio-circle { fill: #ff0000; }
+      .jio-text { font-family: Arial, sans-serif; font-weight: bold; font-size: 24px; fill: white; }
+    </style>
+  </defs>
+  <circle class="jio-circle" cx="100" cy="90" r="55"/>
+  <text class="jio-text" x="70" y="105">Jio</text>
+</svg>
