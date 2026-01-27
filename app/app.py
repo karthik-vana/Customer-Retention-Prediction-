@@ -37,7 +37,9 @@ app.secret_key = 'telecom_churn_prediction_2025'
 # Get the project root directory
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'random_forest_tuned.pkl')
-SCALERS_DIR = os.path.join(PROJECT_ROOT, 'models', 'scalers')
+
+# Lock to the robust scaler used during training for consistent predictions
+SCALER_PATH = os.path.join(PROJECT_ROOT, 'scalers', 'Robust_Scaler.pkl')
 
 # Try to load model and scaler (auto-discover scaler matching model input size)
 MODEL_STATUS = {'loaded': False, 'message': ''}
@@ -58,68 +60,24 @@ except Exception as e:
     MODEL_STATUS['message'] = f'Model not found: {str(e)}'
     logger.error(f"Model error: {str(e)}")
 
-# Helper: find a scaler whose n_features_in_ matches the model
-def find_matching_scaler(model):
-    if not model:
-        return None, None
-    target = getattr(model, 'n_features_in_', None)
-    if target is None:
-        return None, None
-    # Scan available scaler pickles
-    if os.path.exists(SCALERS_DIR):
-        for fname in os.listdir(SCALERS_DIR):
-            if not fname.endswith('.pkl'):
-                continue
-            path = os.path.join(SCALERS_DIR, fname)
-            try:
-                with open(path, 'rb') as f:
-                    s = pickle.load(f)
-                if hasattr(s, 'n_features_in_') and s.n_features_in_ == target:
-                    return s, fname
-            except Exception:
-                continue
-    return None, None
-
-# Load scaler intelligently
+# Load the single chosen scaler
 try:
-    # Try default file first
-    default_path = os.path.join(SCALERS_DIR, 'Standard_Scaler.pkl')
-    if os.path.exists(default_path):
-        try:
-            with open(default_path, 'rb') as f:
-                s = pickle.load(f)
-            # If matches model, use it
-            if model and hasattr(s, 'n_features_in_') and s.n_features_in_ == getattr(model, 'n_features_in_', None):
-                scaler = s
-                SCALER_NAME = 'Standard_Scaler'
-            else:
-                # Try to find a matching scaler
-                match, fname = find_matching_scaler(model)
-                if match is not None:
-                    scaler = match
-                    SCALER_NAME = fname.replace('.pkl', '')
-                else:
-                    scaler = s  # fallback to default even if mismatch
-                    SCALER_NAME = 'Standard_Scaler (fallback)'
-        except Exception as e:
-            logger.warning(f"Failed to load default scaler: {e}")
-            scaler = None
-            SCALER_NAME = None
-    else:
-        # No default, try to find any matching scaler
-        match, fname = find_matching_scaler(model)
-        if match is not None:
-            scaler = match
-            SCALER_NAME = fname.replace('.pkl', '')
-
-    if scaler is not None:
+    if os.path.exists(SCALER_PATH):
+        with open(SCALER_PATH, 'rb') as f:
+            scaler = pickle.load(f)
+        SCALER_NAME = 'Robust_Scaler'
+        # Validate feature count consistency if model is loaded
+        if model is not None and hasattr(scaler, 'n_features_in_') and hasattr(model, 'n_features_in_'):
+            if scaler.n_features_in_ != model.n_features_in_:
+                raise ValueError(
+                    f"Scaler features ({scaler.n_features_in_}) do not match model ({model.n_features_in_})"
+                )
         SCALER_STATUS['loaded'] = True
         SCALER_STATUS['message'] = f'Scaler loaded: {SCALER_NAME}'
         logger.info(f"Scaler loaded successfully: {SCALER_NAME}")
     else:
-        SCALER_STATUS['message'] = 'No scaler found matching model input size'
-        logger.error("Scaler not loaded or mismatch with model")
-
+        SCALER_STATUS['message'] = f'Scaler file not found at {SCALER_PATH}'
+        logger.error(SCALER_STATUS['message'])
 except Exception as e:
     scaler = None
     SCALER_STATUS['message'] = f'Scaler error: {str(e)}'
