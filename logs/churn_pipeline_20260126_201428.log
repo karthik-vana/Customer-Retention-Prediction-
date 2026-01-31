@@ -1,0 +1,92 @@
+2026-01-26 20:14:28,655 - log_code - INFO - ================================================================================
+2026-01-26 20:14:28,655 - log_code - INFO - CHURN PREDICTION PIPELINE - LOGGING INITIALIZED
+2026-01-26 20:14:28,656 - log_code - INFO - Log file: logs\churn_pipeline_20260126_201428.log
+2026-01-26 20:14:28,656 - log_code - INFO - ================================================================================
+2026-01-26 20:14:32,164 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,165 - main - INFO - CUSTOMER RETENTION PREDICTION SYSTEM
+2026-01-26 20:14:32,165 - main - INFO - ================================================================================
+2026-01-26 20:14:32,165 - main - INFO - 
+[Data Loading]
+2026-01-26 20:14:32,165 - main - INFO -   Path: C:\Users\Karthik\Downloads\Customer Retention Prediction System\WA_Fn-UseC_-Telco-Customer-Churn.csv
+2026-01-26 20:14:32,165 - main - INFO -   Shape: (7043, 21)
+2026-01-26 20:14:32,169 - main - INFO -   Memory: 1.13 MB
+2026-01-26 20:14:32,170 - main - INFO -   Columns: ['customerID', 'gender', 'SeniorCitizen', 'Partner', 'Dependents', 'tenure', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod', 'MonthlyCharges', 'TotalCharges', 'Churn']
+2026-01-26 20:14:32,175 - main - INFO -   Missing: 0 values
+2026-01-26 20:14:32,176 - main - INFO - 
+
+################################################################################
+2026-01-26 20:14:32,176 - main - INFO - ################################################################################
+2026-01-26 20:14:32,176 - main - INFO -   CUSTOMER RETENTION SYSTEM - COMPLETE PIPELINE
+2026-01-26 20:14:32,176 - main - INFO - ################################################################################
+2026-01-26 20:14:32,177 - main - INFO - ################################################################################
+
+2026-01-26 20:14:32,177 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,177 - main - INFO - STEP-1: EXPLORATORY DATA ANALYSIS (EDA)
+2026-01-26 20:14:32,178 - main - INFO - ================================================================================
+2026-01-26 20:14:32,214 - main - INFO - 
+[DONE] EDA Complete
+2026-01-26 20:14:32,215 - main - INFO -   Final shape: (7043, 26)
+2026-01-26 20:14:32,215 - main - INFO -   New features created: SIMProvider, TenureGroup, TenureQuarter, SeniorLabel, Demographic
+2026-01-26 20:14:32,215 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,215 - main - INFO - STEP-2 & STEP-3: FEATURE ENGINEERING & SELECTION
+2026-01-26 20:14:32,215 - main - INFO - ================================================================================
+2026-01-26 20:14:32,217 - main - INFO - 
+[STEP-2: Feature Engineering]
+2026-01-26 20:14:32,368 - main - INFO - 
+[STEP-3: Feature Selection]
+2026-01-26 20:14:32,399 - main - INFO - 
+[DONE] Feature Engineering & Selection Complete
+2026-01-26 20:14:32,400 - main - INFO -   Final shape: (7043, 14)
+2026-01-26 20:14:32,400 - main - INFO -   Features after selection: 13
+2026-01-26 20:14:32,409 - main - INFO - 
+[Train-Test Split]
+2026-01-26 20:14:32,410 - main - INFO -   Training: (5634, 13)
+2026-01-26 20:14:32,410 - main - INFO -   Testing: (1409, 13)
+2026-01-26 20:14:32,411 - main - INFO -   Train class dist: {0: 4139, 1: 1495}
+2026-01-26 20:14:32,412 - main - INFO -   Test class dist: {0: 1035, 1: 374}
+2026-01-26 20:14:32,412 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,413 - main - INFO - STEP-4: DATA BALANCING
+2026-01-26 20:14:32,413 - main - INFO - ================================================================================
+2026-01-26 20:14:32,470 - main - INFO - 
+[DONE] Data Balancing Complete
+2026-01-26 20:14:32,470 - main - INFO -   Original: 5634 samples
+2026-01-26 20:14:32,470 - main - INFO -   Balanced: 8278 samples
+2026-01-26 20:14:32,471 - main - INFO -   New distribution: [4139 4139]
+2026-01-26 20:14:32,471 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,471 - main - INFO - STEP-5: FINAL PIPELINE ASSEMBLY
+2026-01-26 20:14:32,471 - main - INFO - ================================================================================
+2026-01-26 20:14:32,473 - main - INFO -   Numeric columns: 13
+2026-01-26 20:14:32,473 - main - INFO -   Categorical columns: 0
+2026-01-26 20:14:32,476 - main - INFO - 
+[DONE] Pipeline Assembly Complete
+2026-01-26 20:14:32,477 - main - INFO -   Preprocessor ready for training
+2026-01-26 20:14:32,477 - main - INFO -   All data transformations defined
+2026-01-26 20:14:32,477 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,477 - main - INFO - MODEL-READY DATA
+2026-01-26 20:14:32,477 - main - INFO - ================================================================================
+2026-01-26 20:14:32,478 - main - INFO - [READY] Data ready for model training:
+2026-01-26 20:14:32,478 - main - INFO -   X_train: (8278, 13)
+2026-01-26 20:14:32,478 - main - INFO -   X_test: (1409, 13)
+2026-01-26 20:14:32,478 - main - INFO -   y_train: (8278,)
+2026-01-26 20:14:32,478 - main - INFO -   y_test: (1409,)
+2026-01-26 20:14:32,479 - main - INFO - 
+================================================================================
+2026-01-26 20:14:32,479 - main - INFO - === COMPLETE PIPELINE SUCCESSFULLY EXECUTED ===
+2026-01-26 20:14:32,479 - main - INFO - ================================================================================
+2026-01-26 20:14:32,479 - main - INFO - 
+Next Step: STEP-6 - MODEL TRAINING & EVALUATION
+2026-01-26 20:14:32,479 - main - INFO - Recommended models:
+2026-01-26 20:14:32,479 - main - INFO -   • Logistic Regression (baseline)
+2026-01-26 20:14:32,480 - main - INFO -   • Random Forest (ensemble)
+2026-01-26 20:14:32,480 - main - INFO -   • Gradient Boosting (XGBoost, LightGBM)
+2026-01-26 20:14:32,480 - main - INFO -   • SVM (Support Vector Machine)
+2026-01-26 20:14:32,480 - main - INFO -   • Neural Networks (Deep Learning)
+2026-01-26 20:14:32,480 - main - INFO - 
+[OK] Ready to proceed with model training!
+2026-01-26 20:14:32,480 - main - INFO -   Access data with: model_ready_data['X_train'], etc.
