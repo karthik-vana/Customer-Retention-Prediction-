@@ -315,9 +315,8 @@ class CUSTOMER_RETENTION_SYSTEM:
 if __name__ == '__main__':
     try:
         # Initialize system
-        system = CUSTOMER_RETENTION_SYSTEM(
-            'C:\\Users\\Karthik\\Downloads\\Customer Retention Prediction System\\WA_Fn-UseC_-Telco-Customer-Churn.csv'
-        )
+        data_path = os.path.join(os.path.dirname(__file__), 'WA_Fn-UseC_-Telco-Customer-Churn.csv')
+        system = CUSTOMER_RETENTION_SYSTEM(data_path)
         
         # Execute complete pipeline
         model_ready_data = system.execute_complete_pipeline()
