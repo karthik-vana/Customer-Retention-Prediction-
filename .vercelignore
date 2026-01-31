@@ -1,0 +1,6 @@
+*
+!app/
+!models/
+!scalers/
+!requirements.txt
+!vercel.json
