@@ -23,11 +23,11 @@ venv_disabled/
 venv_backup/
 logs/
 *.log
-*.png
-*.jpg
-*.jpeg
-*.gif
 *.csv
+
+# Ignore images outside of static folder
+models/*.png
+providers/
 
 # ML pipeline files not needed for web app
 eda/
