@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}About - TelecomAI{% endblock %}
+{% block title %}About - Telecom Retention System{% endblock %}
 
 {% block content %}
 <style>
     .about-hero {
         text-align: center;
-        padding: 120px 20px 80px;
+        padding: 100px 20px 80px;
         background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 80%);
     }
 
@@ -20,144 +20,164 @@
     .about-hero p {
         font-size: 1.25rem;
         color: var(--text-muted);
-        max-width: 600px;
+        max-width: 700px;
         margin: 0 auto;
         line-height: 1.6;
     }
 
-    .mission-section {
-        max-width: 1000px;
-        margin: 0 auto 100px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 60px;
-        align-items: center;
-        padding: 0 20px;
-    }
-
-    .mission-text h2 {
-        font-size: 2.5rem;
-        margin-bottom: 24px;
-        color: white;
-    }
-
-    .mission-text p {
-        color: var(--text-muted);
-        margin-bottom: 20px;
-        line-height: 1.7;
-    }
-
-    .mission-visual {
-        height: 400px;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.1));
-        border: 1px solid var(--border);
-        border-radius: 32px;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .mission-visual::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIiBvcGFjaXR5PSIwLjEiPjxwYXRoIGQ9Ik0wIDBoNDB2NDBIMHoiIGZpbGw9Im5vbmUiLz48Y2lyY2xlIGN4PSIyIiBjeT0iMiIgcj0iMiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
-        opacity: 0.3;
-    }
-
-    .values-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
+    .system-capabilities {
         max-width: 1200px;
         margin: 0 auto 100px;
         padding: 0 20px;
     }
 
-    .value-card {
-        padding: 40px;
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        transition: all 0.3s ease;
+    .cap-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+        margin-bottom: 100px;
     }
 
-    .value-card:hover {
-        border-color: var(--primary);
-        transform: translateY(-8px);
+    .cap-grid.reverse {
+        direction: rtl;
     }
 
-    .value-icon {
-        font-size: 2rem;
-        margin-bottom: 24px;
-        display: inline-block;
+    .cap-grid.reverse .cap-text {
+        direction: ltr;
     }
 
-    .value-card h3 {
-        font-size: 1.5rem;
+    .cap-content h2 {
+        font-size: 2.5rem;
+        margin-bottom: 20px;
         color: white;
-        margin-bottom: 12px;
     }
 
-    .value-card p {
+    .cap-content p {
         color: var(--text-muted);
-        line-height: 1.6;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    .cap-visual {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        height: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .feature-list li {
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--text-main);
+    }
+
+    .feature-list li::before {
+        content: '✓';
+        color: var(--accent);
+        font-weight: bold;
     }
 
     @media (max-width: 768px) {
-        .mission-section {
+        .cap-grid {
             grid-template-columns: 1fr;
+            direction: ltr !important;
         }
 
-        .values-grid {
-            grid-template-columns: 1fr;
+        .cap-grid.reverse .cap-text {
+            direction: ltr;
         }
     }
 </style>
 
 <div class="about-hero">
-    <h1>Improving Retention with Intelligence</h1>
-    <p>We're building the operating system for customer success, powered by predictive AI.</p>
+    <h1>Total Retention Lifecycle</h1>
+    <p>
+        The Telecom Retention System is not just a predictor—it's an intelligent decision support enginge designed to
+        save revenue.
+    </p>
 </div>
 
-<div class="mission-section">
-    <div class="mission-text">
-        <h2>Our Mission</h2>
-        <p>
-            In the subscription economy, retention is the new growth. Yet, most companies react to churn only after it
-            impacts revenue.
-        </p>
-        <p>
-            TelecomAI flips the script. We empower telecom providers to be proactive, using pattern recognition to
-            identify dissatisfied customers before they leave.
-        </p>
-        <p>
-            Our model doesn't just predict risk—it explains <em>why</em>, giving teams the insights they need to save
-            relationships.
-        </p>
-    </div>
-    <div class="mission-visual">
-        <div
-            style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; background: var(--primary); filter: blur(80px); border-radius: 50%; opacity: 0.5;">
+<div class="system-capabilities">
+
+    <!-- Capability 1 -->
+    <div class="cap-grid">
+        <div class="cap-content cap-text">
+            <h2>1. Intelligent Prediction</h2>
+            <p>
+                At the core of our platform is a sophisticated <strong>Random Forest Classifier</strong> trained on over
+                7,000 customer profiles. It doesn't guess; it calculates the mathematical probability of churn based on
+                historical patterns.
+            </p>
+            <ul class="feature-list">
+                <li>Real-time inference (< 200ms)</li>
+                <li>Considers 20+ behavioral features</li>
+                <li>Accuracy optimized for active retention</li>
+            </ul>
+        </div>
+        <div class="cap-visual">
+            <div style="font-size: 5rem; opacity: 0.2;">🔮</div>
+            <div class="glow-effect"
+                style="background: radial-gradient(circle, var(--primary) 0%, transparent 60%); opacity: 0.4;"></div>
         </div>
     </div>
+
+    <!-- Capability 2 -->
+    <div class="cap-grid reverse">
+        <div class="cap-content cap-text">
+            <h2>2. Root Cause Analysis</h2>
+            <p>
+                Knowing <em>who</em> will churn is not enough. You need to know <em>why</em>. Our system deconstructs
+                the risk score to highlight the primary driving factors—whether it's pricing fatigue, contract
+                inflexibility, or service quality issues.
+            </p>
+            <ul class="feature-list">
+                <li>Automated factor identification</li>
+                <li>Transparent "White Box" AI logic</li>
+                <li>Highlights actionable pain points</li>
+            </ul>
+        </div>
+        <div class="cap-visual">
+            <div style="font-size: 5rem; opacity: 0.2;">📊</div>
+            <div class="glow-effect"
+                style="background: radial-gradient(circle, var(--accent) 0%, transparent 60%); opacity: 0.4;"></div>
+        </div>
+    </div>
+
+    <!-- Capability 3 -->
+    <div class="cap-grid">
+        <div class="cap-content cap-text">
+            <h2>3. Strategic Action Engine</h2>
+            <p>
+                The ultimate goal is retention. Our system maps risk profiles to <strong>specific, proven retention
+                    strategies</strong>. From upgrading fiber optic plans to offering long-term contract discounts, we
+                tell your support team exactly what to say.
+            </p>
+            <ul class="feature-list">
+                <li>Personalized offer generation</li>
+                <li>Scripted intervention strategies</li>
+                <li>Revenue-focused outcomes</li>
+            </ul>
+        </div>
+        <div class="cap-visual">
+            <div style="font-size: 5rem; opacity: 0.2;">🎯</div>
+            <div class="glow-effect"
+                style="background: radial-gradient(circle, #f43f5e 0%, transparent 60%); opacity: 0.4;"></div>
+        </div>
+    </div>
+
 </div>
 
-<div class="values-grid">
-    <div class="value-card">
-        <span class="value-icon">🛡️</span>
-        <h3>Privacy First</h3>
-        <p>We believe in ethical AI. Customer data is processed securely with enterprise-grade encryption and minimized
-            retention.</p>
-    </div>
-    <div class="value-card">
-        <span class="value-icon">⚡</span>
-        <h3>Speed Matters</h3>
-        <p>Real-time decisions require real-time inference. Our architecture is built for sub-millisecond latency.</p>
-    </div>
-    <div class="value-card">
-        <span class="value-icon">🔬</span>
-        <h3>Scientific Rigor</h3>
-        <p>No black boxes. We prioritize explainable AI so you understand the factors driving every prediction.</p>
-    </div>
+<div style="text-align: center; margin-bottom: 100px;">
+    <h2 style="color: white; margin-bottom: 30px;">Ready to Reduce Churn?</h2>
+    <a href="/predict" class="nav-btn" style="padding: 16px 40px; font-size: 1.1rem;">Launch System Console</a>
 </div>
 {% endblock %}
