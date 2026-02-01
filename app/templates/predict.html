@@ -4,637 +4,1255 @@
 
 {% block content %}
 <style>
+    /* ============================================ */
+    /* PREMIUM CHURN PREDICTION PAGE STYLES        */
+    /* ============================================ */
+
     :root {
-        --bg: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.35), transparent 45%),
-               radial-gradient(circle at 80% 0%, rgba(59, 130, 246, 0.32), transparent 45%),
-               radial-gradient(circle at 50% 80%, rgba(16, 185, 129, 0.28), transparent 50%),
-               linear-gradient(135deg, #020617 0%, #0a0f1f 45%, #020617 100%);
-        --panel: rgba(255, 255, 255, 0.18);
-        --border: rgba(255, 255, 255, 0.35);
-        --card: rgba(255, 255, 255, 0.22);
-        --accent: #60a5fa;
-        --accent-2: #818cf8;
-        --text: #f8fafc;
+        --primary: #6366f1;
+        --primary-dark: #4f46e5;
+        --secondary: #8b5cf6;
+        --accent: #06b6d4;
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --dark: #0f172a;
+        --darker: #020617;
+        --light: #f8fafc;
         --muted: #94a3b8;
-        --danger: #f87171;
-        --success: #34d399;
-        --warning: #fbbf24;
+        --glass: rgba(255, 255, 255, 0.08);
+        --glass-border: rgba(255, 255, 255, 0.15);
+        --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-2: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
+        --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
     }
 
-    .page-bg {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .predict-page {
         min-height: 100vh;
-        padding: 60px 20px 50px;
-        background: var(--bg);
+        background: var(--darker);
         position: relative;
-        overflow: hidden;
+        overflow-x: hidden;
     }
 
-    .page-bg::before,
-    .page-bg::after {
-        content: "";
-        position: absolute;
+    /* Animated Background */
+    .bg-gradient {
+        position: fixed;
         inset: 0;
-        background: radial-gradient(circle at 30% 25%, rgba(255,255,255,0.12), transparent 35%),
-                    radial-gradient(circle at 75% 65%, rgba(255,255,255,0.08), transparent 40%);
+        background:
+            radial-gradient(ellipse 80% 50% at 20% 40%, rgba(99, 102, 241, 0.15), transparent),
+            radial-gradient(ellipse 60% 40% at 80% 20%, rgba(139, 92, 246, 0.12), transparent),
+            radial-gradient(ellipse 50% 50% at 50% 80%, rgba(6, 182, 212, 0.1), transparent),
+            linear-gradient(180deg, #0f172a 0%, #020617 100%);
         z-index: 0;
+    }
+
+    .floating-orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.4;
+        animation: float 20s ease-in-out infinite;
         pointer-events: none;
     }
 
-    .glass-shell {
+    .orb-1 {
+        width: 400px;
+        height: 400px;
+        background: #6366f1;
+        top: -100px;
+        left: -100px;
+        animation-delay: 0s;
+    }
+
+    .orb-2 {
+        width: 300px;
+        height: 300px;
+        background: #8b5cf6;
+        top: 50%;
+        right: -100px;
+        animation-delay: -5s;
+    }
+
+    .orb-3 {
+        width: 350px;
+        height: 350px;
+        background: #06b6d4;
+        bottom: -100px;
+        left: 30%;
+        animation-delay: -10s;
+    }
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0) scale(1);
+        }
+
+        50% {
+            transform: translateY(-30px) scale(1.05);
+        }
+    }
+
+    /* Main Container */
+    .main-container {
         position: relative;
         z-index: 1;
-        max-width: 1200px;
+        max-width: 1400px;
         margin: 0 auto;
-        backdrop-filter: blur(32px);
-        -webkit-backdrop-filter: blur(32px);
-        background: linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.06));
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 28px;
-        box-shadow: 0 40px 120px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.25);
-        padding: 44px;
+        padding: 40px 24px 80px;
     }
 
-    .hero {
+    /* Hero Header */
+    .hero-header {
         text-align: center;
-        margin-bottom: 40px;
-        color: var(--text);
+        margin-bottom: 48px;
+        animation: fadeInDown 0.8s ease-out;
     }
 
-    .hero h1 {
-        font-size: 2.4rem;
-        letter-spacing: 0.8px;
-        margin-bottom: 12px;
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .hero-header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
         font-weight: 800;
-        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        background: var(--gradient-2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 16px;
+        letter-spacing: -0.02em;
+    }
+
+    .hero-header p {
+        color: var(--muted);
+        font-size: 1.15rem;
+        max-width: 600px;
+        margin: 0 auto 24px;
+    }
+
+    .step-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 28px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 100px;
+        backdrop-filter: blur(20px);
+    }
+
+    .step-indicator span {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--light);
+        font-weight: 600;
+        font-size: 0.95rem;
+    }
+
+    .step-indicator .step-num {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--primary);
+        border-radius: 50%;
+        font-size: 0.85rem;
+        font-weight: 700;
+    }
+
+    .step-indicator .arrow {
+        color: var(--muted);
+        font-size: 1.2rem;
+    }
+
+    /* Layout Grid */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 32px;
+        align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+        .content-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Form Container */
+    .form-container {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        border: 1px solid var(--glass-border);
+        border-radius: 28px;
+        padding: 40px;
+        backdrop-filter: blur(20px);
+        box-shadow: var(--shadow-lg);
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Form Sections */
+    .form-section {
+        margin-bottom: 32px;
+        padding: 28px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        animation: sectionFade 0.6s ease-out backwards;
+    }
+
+    .form-section:nth-child(1) {
+        animation-delay: 0.3s;
+    }
+
+    .form-section:nth-child(2) {
+        animation-delay: 0.4s;
+    }
+
+    .form-section:nth-child(3) {
+        animation-delay: 0.5s;
+    }
+
+    .form-section:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+
+    .form-section:nth-child(5) {
+        animation-delay: 0.7s;
+    }
+
+    @keyframes sectionFade {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .form-section:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(99, 102, 241, 0.3);
+        transform: translateX(4px);
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 24px;
+    }
+
+    .section-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--gradient-1);
+        border-radius: 14px;
+        font-size: 1.5rem;
+        box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--light);
+        letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+        font-size: 0.9rem;
+        color: var(--muted);
+        margin-top: 2px;
+    }
+
+    /* Form Grid */
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+    .form-grid.single {
+        grid-template-columns: 1fr;
+    }
+
+    @media (max-width: 640px) {
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Form Groups */
+    .form-group {
+        position: relative;
+    }
+
+    .form-group label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--light);
+        margin-bottom: 10px;
+    }
+
+    .required {
+        color: var(--danger);
+        font-size: 1.1rem;
+    }
+
+    .form-control,
+    .form-select {
+        width: 100%;
+        padding: 16px 18px;
+        background: rgba(15, 23, 42, 0.8);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        color: var(--light);
+        font-size: 1rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        outline: none;
+    }
+
+    .form-control::placeholder {
+        color: rgba(148, 163, 184, 0.6);
+    }
+
+    .form-control:hover,
+    .form-select:hover {
+        border-color: rgba(99, 102, 241, 0.4);
+        background: rgba(15, 23, 42, 0.9);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        border-color: var(--primary);
+        background: rgba(15, 23, 42, 1);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+    }
+
+    .form-select {
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        background-size: 20px;
+        padding-right: 48px;
+    }
+
+    .form-select option {
+        background: #1e293b;
+        color: var(--light);
+        padding: 12px;
+    }
+
+    .help-text {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 8px;
+        padding-left: 2px;
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        gap: 16px;
+        margin-top: 36px;
+    }
+
+    @media (max-width: 640px) {
+        .action-buttons {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 18px 28px;
+        font-size: 1rem;
+        font-weight: 700;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        font-family: inherit;
+    }
+
+    .btn-primary {
+        background: var(--gradient-2);
+        color: white;
+        box-shadow: 0 10px 30px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(99, 102, 241, 0.45);
+    }
+
+    .btn-primary:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+    }
+
+    .btn-outline {
+        background: transparent;
+        color: var(--muted);
+        border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-outline:hover {
+        border-color: var(--primary);
+        color: var(--light);
+        background: rgba(99, 102, 241, 0.1);
+    }
+
+    .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none !important;
+    }
+
+    .btn .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* Sidebar */
+    .sidebar {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        animation: fadeInRight 0.8s ease-out 0.4s backwards;
+    }
+
+    @keyframes fadeInRight {
+        from {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .sidebar-card {
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 28px;
+        backdrop-filter: blur(20px);
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        border-color: rgba(99, 102, 241, 0.3);
+    }
+
+    .sidebar-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--light);
+        margin-bottom: 18px;
+    }
+
+    .sidebar-card h3 .icon {
+        font-size: 1.3rem;
+    }
+
+    .sidebar-card ol,
+    .sidebar-card ul {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.9;
+        padding-left: 20px;
+    }
+
+    .sidebar-card li {
+        margin-bottom: 6px;
+    }
+
+    .risk-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        margin-bottom: 10px;
+        transition: all 0.2s ease;
+    }
+
+    .risk-item:hover {
+        background: rgba(255, 255, 255, 0.06);
+    }
+
+    .risk-item .badge {
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .risk-item .badge.danger {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+    }
+
+    .risk-item .badge.success {
+        background: rgba(16, 185, 129, 0.2);
+        color: #34d399;
+    }
+
+    .risk-item p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+
+    /* Result Card */
+    .result-card {
+        background: linear-gradient(145deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1));
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 20px;
+        padding: 28px;
+        display: none;
+        animation: resultPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes resultPop {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    .result-card.show {
+        display: block;
+    }
+
+    .result-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--light);
+        margin-bottom: 24px;
+    }
+
+    .probability-section {
+        margin-bottom: 24px;
+    }
+
+    .probability-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .probability-label span {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--light);
+    }
+
+    .probability-value {
+        font-size: 1.5rem;
+        font-weight: 800;
+        background: var(--gradient-2);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    .hero p {
-        color: var(--muted);
-        margin-bottom: 20px;
-        font-size: 1.05rem;
+    .progress-bar {
+        height: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
     }
 
-    .hero .pill {
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981, #f59e0b, #ef4444);
+        border-radius: 10px;
+        width: 0%;
+        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .risk-badge-container {
+        text-align: center;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        margin-bottom: 20px;
+    }
+
+    .risk-badge {
+        display: inline-block;
+        padding: 12px 32px;
+        border-radius: 100px;
+        font-size: 1.1rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .risk-badge.low {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+
+    .risk-badge.medium {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+
+    .risk-badge.high {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+    }
+
+    .recommendation-box {
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 14px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .recommendation-box h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--light);
+        margin-bottom: 10px;
+    }
+
+    .recommendation-box p {
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .main-container {
+            padding: 24px 16px 60px;
+        }
+
+        .form-container {
+            padding: 24px;
+        }
+
+        .form-section {
+            padding: 20px;
+        }
+
+        .step-indicator {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+
+    /* Loading overlay */
+    .loading-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 6, 23, 0.8);
+        backdrop-filter: blur(8px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .loading-overlay.show {
+        display: flex;
+    }
+
+    .loading-content {
+        text-align: center;
+        color: var(--light);
+    }
+
+    .loading-spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 20px;
+    }
+
+    .loading-content p {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    /* Tooltip */
+    .tooltip-icon {
         display: inline-flex;
         align-items: center;
-        gap: 12px;
-        padding: 14px 22px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: var(--panel);
-        color: var(--text);
-        font-weight: 600;
-        letter-spacing: 0.3px;
-    }
-
-    .glass-panel {
-        background: linear-gradient(145deg, rgba(255,255,255,0.25), rgba(255,255,255,0.12));
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 24px;
-        padding: 32px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 32px 80px rgba(0,0,0,0.45), 0 0 60px rgba(96, 165, 250, 0.15);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-    }
-
-    .section-title {
-        color: var(--text);
-        font-weight: 700;
-        font-size: 1.1rem;
-        letter-spacing: 0.4px;
-        margin-bottom: 16px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
-
-    .form-section {
-        background: linear-gradient(145deg, rgba(255,255,255,0.28), rgba(255,255,255,0.14));
-        border: 1px solid rgba(255, 255, 255, 0.45);
-        border-radius: 20px;
-        padding: 22px;
-        margin-bottom: 20px;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), 0 12px 32px rgba(0,0,0,0.3), 0 0 40px rgba(96, 165, 250, 0.12);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-    }
-
-    .form-label {
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 8px;
-        font-size: 0.96rem;
-    }
-
-    .required-badge { color: var(--danger); }
-
-    .form-control, .form-select {
-        background: rgba(255,255,255,0.06);
-        color: var(--text);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 12px 14px;
-        font-size: 0.95rem;
-    }
-
-    .form-control:focus, .form-select:focus {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 5px rgba(96, 165, 250, 0.25);
-        background: rgba(255,255,255,0.09);
-        outline: none;
-    }
-
-    .form-control::placeholder, .form-select option { color: var(--muted); }
-
-    .help-text { color: var(--muted); font-size: 0.86rem; margin-top: 5px; }
-
-    .actions {
-        margin-top: 32px;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 14px;
-    }
-
-    .btn-primary, .btn-success, .btn-outline-secondary {
-        border-radius: 14px;
-        padding: 14px;
-        font-weight: 700;
-        border: none;
-        transition: all 0.25s ease;
-        font-size: 1rem;
-        letter-spacing: 0.3px;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, var(--accent-2), var(--accent));
-        color: #050a14;
-        box-shadow: 0 16px 42px rgba(96, 165, 250, 0.35);
-    }
-
-    .btn-success { background: linear-gradient(135deg, #10b981, #34d399); color: #020617; box-shadow: 0 14px 36px rgba(52, 211, 153, 0.32); }
-    .btn-outline-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
-
-    .btn-primary:hover, .btn-success:hover { transform: translateY(-2px); box-shadow: 0 22px 56px rgba(0,0,0,0.35); }
-    .btn-outline-secondary:hover { border-color: var(--accent); color: var(--accent); box-shadow: 0 10px 28px rgba(0,0,0,0.25); }
-
-    .sidebar-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-bottom: 18px; color: var(--text); box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 32px rgba(0,0,0,0.2); }
-    .sidebar-card h5 { font-weight: 700; margin-bottom: 14px; letter-spacing: 0.3px; }
-    .sidebar-card ol, .sidebar-card ul { color: var(--muted); }
-
-    .result-card {
-        background: linear-gradient(145deg, rgba(96,165,250,0.30), rgba(129,140,248,0.35));
-        color: var(--text);
-        padding: 24px;
-        border-radius: 18px;
-        border: 1px solid var(--border);
-        box-shadow: 0 20px 56px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.18);
-    }
-
-    .meter-shell { background: rgba(255,255,255,0.12); border-radius: 12px; overflow: hidden; height: 44px; }
-    .meter-bar { height: 100%; background: linear-gradient(90deg, #22c55e, #fbbf24, #ef4444); width: 0%; display: flex; align-items: center; justify-content: center; color: #020617; font-weight: 800; font-size: 1.1rem; }
-
-    .info-note { border-left: 4px solid var(--accent); padding-left: 14px; color: var(--muted); }
-
-    @media (max-width: 992px) {
-        .glass-shell { padding: 24px; }
-        .hero h1 { font-size: 1.9rem; }
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        background: rgba(99, 102, 241, 0.3);
+        border-radius: 50%;
+        font-size: 0.7rem;
+        color: var(--light);
+        cursor: help;
+        margin-left: 4px;
     }
 </style>
 
-<div class="page-bg">
-    <div class="glass-shell">
-        <!-- Header -->
-        <div class="hero">
-            <h1>Customer Churn Prediction</h1>
-            <p>Premium ML scoring for telecom retention insights</p>
-            <div class="pill">Fill details → Predict → View risk & actions</div>
+<div class="predict-page">
+    <!-- Animated Background -->
+    <div class="bg-gradient"></div>
+    <div class="floating-orb orb-1"></div>
+    <div class="floating-orb orb-2"></div>
+    <div class="floating-orb orb-3"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Analyzing Customer Data...</p>
         </div>
+    </div>
 
-        <div class="row g-4">
-            <div class="col-lg-8">
-                <!-- Prediction Form -->
-                <div class="glass-panel">
-                    <form id="predictionForm" onsubmit="submitPrediction(event)" novalidate>
-                        
-                        <!-- Section 0: Customer ID -->
-                        <div class="form-section">
-                            <div class="section-title">Customer ID</div>
-                            <div class="row g-3">
-                                <div class="col-12">
-                                    <label class="form-label"><span class="required-badge">*</span> Customer ID</label>
-                                    <input type="text" name="customerID" class="form-control" placeholder="Unique identifier (e.g., CUST001)" required>
-                                    <div class="help-text">Unique identifier for this customer account</div>
-                                </div>
+    <div class="main-container">
+        <!-- Hero Header -->
+        <header class="hero-header">
+            <h1>🎯 Customer Churn Prediction</h1>
+            <p>Advanced ML-powered risk assessment for telecom customer retention</p>
+            <div class="step-indicator">
+                <span><span class="step-num">1</span> Fill Details</span>
+                <span class="arrow">→</span>
+                <span><span class="step-num">2</span> Predict</span>
+                <span class="arrow">→</span>
+                <span><span class="step-num">3</span> Get Insights</span>
+            </div>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Left: Form -->
+            <div class="form-container">
+                <form id="predictionForm" novalidate>
+                    <!-- Section 1: Customer ID -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon">🆔</div>
+                            <div>
+                                <div class="section-title">Customer Identification</div>
+                                <div class="section-subtitle">Enter unique customer identifier</div>
                             </div>
                         </div>
-                        
-                        <!-- Section 1: Demographics -->
-                        <div class="form-section">
-                            <div class="section-title">Customer Demographics</div>
-                            <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Gender</label>
-                                    <select name="gender" class="form-select" required>
-                                        <option value="">Select gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                    </select>
-                                    <div class="help-text">Customer's gender (impacts retention patterns)</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Senior Citizen</label>
-                                    <select name="SeniorCitizen" class="form-select" required>
-                                        <option value="">Is customer 65+ years?</option>
-                                        <option value="0">No (Under 65)</option>
-                                        <option value="1">Yes (65 or above)</option>
-                                    </select>
-                                    <div class="help-text">Senior customers have different churn patterns</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Has Partner</label>
-                                    <select name="Partner" class="form-select" required>
-                                        <option value="">Is customer married/partnered?</option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
-                                    <div class="help-text">Partner status affects account stability</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Has Dependents</label>
-                                    <select name="Dependents" class="form-select" required>
-                                        <option value="">Does customer have dependents?</option>
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
-                                    <div class="help-text">Dependents typically mean stable customer</div>
-                                </div>
+                        <div class="form-grid single">
+                            <div class="form-group">
+                                <label><span class="required">*</span> Customer ID</label>
+                                <input type="text" name="customerID" class="form-control"
+                                    placeholder="e.g., CUST-001-2025" required>
+                                <div class="help-text">Unique identifier for this customer account</div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Section 2: Services -->
-                        <div class="form-section">
-                            <div class="section-title">Internet & Phone Services</div>
-                            <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Phone Service</label>
-                                    <select name="PhoneService" class="form-select" required>
-                                        <option value="">Does customer have phone service?</option>
-                                        <option value="Yes">Yes - Has phone service</option>
-                                        <option value="No">No phone service</option>
-                                    </select>
-                                    <div class="help-text">Landline phone service subscription</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Multiple Phone Lines</label>
-                                    <select name="MultipleLines" class="form-select" required>
-                                        <option value="">Multiple lines status?</option>
-                                        <option value="Yes">Yes - Multiple lines</option>
-                                        <option value="No">Single line only</option>
-                                        <option value="No phone service">N/A - No phone service</option>
-                                    </select>
-                                    <div class="help-text">Multiple phone lines for family/business</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Internet Service Type</label>
-                                    <select name="InternetService" class="form-select" required>
-                                        <option value="">Select internet type</option>
-                                        <option value="DSL">DSL (Reliable, moderate speed)</option>
-                                        <option value="Fiber optic">Fiber Optic (Fast, premium)</option>
-                                        <option value="No">No Internet Service</option>
-                                    </select>
-                                    <div class="help-text">Important: Fiber has higher churn rate!</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Online Security</label>
-                                    <select name="OnlineSecurity" class="form-select" required>
-                                        <option value="">Online security service?</option>
-                                        <option value="Yes">Yes - Protected</option>
-                                        <option value="No">No protection</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">Anti-virus & malware protection</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Online Backup</label>
-                                    <select name="OnlineBackup" class="form-select" required>
-                                        <option value="">Cloud backup service?</option>
-                                        <option value="Yes">Yes - Backed up</option>
-                                        <option value="No">No backup</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">Automatic cloud data backup</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Device Protection</label>
-                                    <select name="DeviceProtection" class="form-select" required>
-                                        <option value="">Device protection plan?</option>
-                                        <option value="Yes">Yes - Protected</option>
-                                        <option value="No">No protection</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">Covers repairs for phones/tablets</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Tech Support</label>
-                                    <select name="TechSupport" class="form-select" required>
-                                        <option value="">Tech support service?</option>
-                                        <option value="Yes">Yes - 24/7 Support</option>
-                                        <option value="No">No tech support</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">24/7 technical assistance (high retention!)</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Streaming TV</label>
-                                    <select name="StreamingTV" class="form-select" required>
-                                        <option value="">TV streaming service?</option>
-                                        <option value="Yes">Yes - Streaming TV</option>
-                                        <option value="No">No streaming</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">Entertainment streaming add-on</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Streaming Movies</label>
-                                    <select name="StreamingMovies" class="form-select" required>
-                                        <option value="">Movie streaming service?</option>
-                                        <option value="Yes">Yes - Premium movies</option>
-                                        <option value="No">No movies</option>
-                                        <option value="No internet service">N/A - No internet</option>
-                                    </select>
-                                    <div class="help-text">Premium movie streaming add-on</div>
-                                </div>
+                    <!-- Section 2: Demographics -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon">👤</div>
+                            <div>
+                                <div class="section-title">Customer Demographics</div>
+                                <div class="section-subtitle">Basic customer information</div>
                             </div>
                         </div>
-
-                        <!-- Section 3: Billing & Contract -->
-                        <div class="form-section">
-                            <div class="section-title">Billing & Contract Terms</div>
-                            <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Contract Type</label>
-                                    <select name="Contract" class="form-select" required>
-                                        <option value="">Select contract type</option>
-                                        <option value="Month-to-month">Month-to-month (Higher churn)</option>
-                                        <option value="One year">One year</option>
-                                        <option value="Two year">Two year (More stable)</option>
-                                    </select>
-                                    <div class="help-text">Month-to-month = highest churn risk</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Paperless Billing</label>
-                                    <select name="PaperlessBilling" class="form-select" required>
-                                        <option value="">Uses paperless billing?</option>
-                                        <option value="Yes">Yes - Digital bills</option>
-                                        <option value="No">No - Paper bills</option>
-                                    </select>
-                                    <div class="help-text">Digital-savvy customers often stay longer</div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <label class="form-label"><span class="required-badge">*</span> Payment Method</label>
-                                    <select name="PaymentMethod" class="form-select" required>
-                                        <option value="">Select payment method</option>
-                                        <option value="Electronic check">Electronic check (Higher churn)</option>
-                                        <option value="Mailed check">Mailed check</option>
-                                        <option value="Bank transfer (automatic)">Bank transfer (Automatic)</option>
-                                        <option value="Credit card (automatic)">Credit card (Automatic)</option>
-                                    </select>
-                                    <div class="help-text">Automatic payments = stronger commitment</div>
-                                </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><span class="required">*</span> Gender</label>
+                                <select name="gender" class="form-select" required>
+                                    <option value="">Select gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Senior Citizen</label>
+                                <select name="SeniorCitizen" class="form-select" required>
+                                    <option value="">Is customer 65+?</option>
+                                    <option value="0">No (Under 65)</option>
+                                    <option value="1">Yes (65 or above)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Has Partner</label>
+                                <select name="Partner" class="form-select" required>
+                                    <option value="">Married/Partnered?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Has Dependents</label>
+                                <select name="Dependents" class="form-select" required>
+                                    <option value="">Has dependents?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Section 4: Charges -->
-                        <div class="form-section">
-                            <div class="section-title">Usage & Charges</div>
-                            <div class="row g-3">
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Tenure (How long customer?)</label>
-                                    <input type="number" name="tenure" class="form-control" placeholder="e.g., 24" min="0" max="72" required>
-                                    <div class="help-text">Months customer has been with company (0-72 months)</div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <label class="form-label"><span class="required-badge">*</span> Monthly Bill</label>
-                                    <input type="number" name="MonthlyCharges" class="form-control" placeholder="e.g., 65.50" min="0" step="0.01" required>
-                                    <div class="help-text">Monthly service charge in USD</div>
-                                </div>
-                                <div class="col-sm-12">
-                                    <label class="form-label"><span class="required-badge">*</span> Total Amount Paid</label>
-                                    <input type="number" name="TotalCharges" class="form-control" placeholder="e.g., 1570.00" min="0" step="0.01" required>
-                                    <div class="help-text">Total amount customer has paid since signup (Tenure × Avg Monthly Bill)</div>
-                                </div>
+                    <!-- Section 3: Services -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon">📡</div>
+                            <div>
+                                <div class="section-title">Services Subscribed</div>
+                                <div class="section-subtitle">Phone, internet & add-on services</div>
                             </div>
                         </div>
-
-                        <!-- Action Buttons -->
-                        <div class="actions">
-                            <button type="submit" class="btn btn-primary" id="predictBtn">Predict Churn</button>
-                            <button type="button" class="btn btn-success" onclick="loadExample()">Load Example Data</button>
-                            <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><span class="required">*</span> Phone Service</label>
+                                <select name="PhoneService" class="form-select" required>
+                                    <option value="">Has phone service?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Multiple Lines</label>
+                                <select name="MultipleLines" class="form-select" required>
+                                    <option value="">Multiple phone lines?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No phone service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Internet Service</label>
+                                <select name="InternetService" class="form-select" required>
+                                    <option value="">Select internet type</option>
+                                    <option value="DSL">DSL</option>
+                                    <option value="Fiber optic">Fiber Optic</option>
+                                    <option value="No">No Internet</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Online Security</label>
+                                <select name="OnlineSecurity" class="form-select" required>
+                                    <option value="">Online security?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Online Backup</label>
+                                <select name="OnlineBackup" class="form-select" required>
+                                    <option value="">Cloud backup?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Device Protection</label>
+                                <select name="DeviceProtection" class="form-select" required>
+                                    <option value="">Device protection?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Tech Support</label>
+                                <select name="TechSupport" class="form-select" required>
+                                    <option value="">Tech support?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Streaming TV</label>
+                                <select name="StreamingTV" class="form-select" required>
+                                    <option value="">Streaming TV?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Streaming Movies</label>
+                                <select name="StreamingMovies" class="form-select" required>
+                                    <option value="">Streaming movies?</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    <option value="No internet service">N/A</option>
+                                </select>
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+
+                    <!-- Section 4: Billing -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon">💳</div>
+                            <div>
+                                <div class="section-title">Billing & Contract</div>
+                                <div class="section-subtitle">Payment and contract details</div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><span class="required">*</span> Contract Type</label>
+                                <select name="Contract" class="form-select" required>
+                                    <option value="">Select contract</option>
+                                    <option value="Month-to-month">Month-to-month</option>
+                                    <option value="One year">One Year</option>
+                                    <option value="Two year">Two Year</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Paperless Billing</label>
+                                <select name="PaperlessBilling" class="form-select" required>
+                                    <option value="">Paperless billing?</option>
+                                    <option value="Yes">Yes (Digital)</option>
+                                    <option value="No">No (Paper)</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label><span class="required">*</span> Payment Method</label>
+                                <select name="PaymentMethod" class="form-select" required>
+                                    <option value="">Select payment method</option>
+                                    <option value="Electronic check">Electronic Check</option>
+                                    <option value="Mailed check">Mailed Check</option>
+                                    <option value="Bank transfer (automatic)">Bank Transfer (Auto)</option>
+                                    <option value="Credit card (automatic)">Credit Card (Auto)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Usage & Charges -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon">📊</div>
+                            <div>
+                                <div class="section-title">Usage & Charges</div>
+                                <div class="section-subtitle">Tenure and billing amounts</div>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label><span class="required">*</span> Tenure (Months)</label>
+                                <input type="number" name="tenure" class="form-control" placeholder="e.g., 24" min="0"
+                                    max="72" required>
+                                <div class="help-text">How many months with company (0-72)</div>
+                            </div>
+                            <div class="form-group">
+                                <label><span class="required">*</span> Monthly Charges ($)</label>
+                                <input type="number" name="MonthlyCharges" class="form-control"
+                                    placeholder="e.g., 65.50" min="0" step="0.01" required>
+                                <div class="help-text">Monthly service charge</div>
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label><span class="required">*</span> Total Charges ($)</label>
+                                <input type="number" name="TotalCharges" class="form-control"
+                                    placeholder="e.g., 1570.00" min="0" step="0.01" required>
+                                <div class="help-text">Total amount paid since signup</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button type="submit" class="btn btn-primary" id="predictBtn">
+                            <span>🎯 Predict Churn</span>
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="loadExample()">
+                            <span>📝 Load Example</span>
+                        </button>
+                        <button type="reset" class="btn btn-outline">
+                            <span>🔄 Clear</span>
+                        </button>
+                    </div>
+                </form>
             </div>
 
-            <!-- Right Sidebar -->
-            <div class="col-lg-4">
-                <!-- Instructions Card -->
+            <!-- Right: Sidebar -->
+            <aside class="sidebar">
+                <!-- How to Use -->
                 <div class="sidebar-card">
-                    <h5>How to Use</h5>
-                    <ol style="margin: 0; padding-left: 20px; line-height: 1.8;">
-                        <li style="margin-bottom: 8px;">Fill in all customer details</li>
-                        <li style="margin-bottom: 8px;">Use "Load Example" to see sample data</li>
-                        <li style="margin-bottom: 8px;">Click "Predict Churn"</li>
-                        <li style="margin-bottom: 8px;">Get risk assessment instantly</li>
+                    <h3><span class="icon">📖</span> How to Use</h3>
+                    <ol>
+                        <li>Fill in all customer details</li>
+                        <li>Use "Load Example" for sample data</li>
+                        <li>Click "Predict Churn"</li>
+                        <li>Get instant risk assessment</li>
                         <li>Review recommendations</li>
                     </ol>
                 </div>
 
-                <!-- Key Factors Card -->
+                <!-- Risk Factors -->
                 <div class="sidebar-card">
-                    <h5>Churn Risk Factors</h5>
-                    <ul style="font-size: 0.9rem; line-height: 1.7; margin: 0; padding-left: 18px;">
-                        <li><strong>High Risk:</strong> Month-to-month contract, Fiber optic internet</li>
-                        <li><strong>High Risk:</strong> Electronic check payments</li>
-                        <li><strong>Protective:</strong> Tech support & online security services</li>
-                        <li><strong>Protective:</strong> Long tenure & automatic payments</li>
-                    </ul>
-                </div>
-
-                <!-- Results Card (Hidden by default) -->
-                <div id="resultBox" style="display: none;">
-                    <div class="result-card">
-                        <h5 style="margin-bottom: 18px; font-weight: bold;">Prediction Results</h5>
-                        
-                        <div style="margin-bottom: 18px;">
-                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">Churn Probability</p>
-                            <div class="meter-shell">
-                                <div id="probabilityBar" class="meter-bar">0%</div>
-                            </div>
-                            <small class="info-note">What is the likelihood this customer will leave?</small>
-                        </div>
-
-                        <div style="margin-bottom: 18px;">
-                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">Risk Category</p>
-                            <div id="riskLevel" style="padding: 12px; border-radius: 10px; text-align: center; color: #0b1021; font-weight: bold; background: rgba(255,255,255,0.85);">Calculating...</div>
-                        </div>
-
-                        <div style="background: rgba(255,255,255,0.12); padding: 15px; border-radius: 10px;">
-                            <p style="margin: 0 0 8px 0; font-weight: 600; font-size: 0.95rem;">Recommended Actions</p>
-                            <p id="recommendation" style="margin: 0; font-size: 0.9rem; line-height: 1.6; color: var(--text); opacity: 0.95;">Loading recommendations...</p>
-                        </div>
+                    <h3><span class="icon">⚠️</span> Churn Risk Factors</h3>
+                    <div class="risk-item">
+                        <span class="badge danger">High Risk</span>
+                        <p>Month-to-month contracts & Fiber optic internet</p>
+                    </div>
+                    <div class="risk-item">
+                        <span class="badge danger">High Risk</span>
+                        <p>Electronic check payments</p>
+                    </div>
+                    <div class="risk-item">
+                        <span class="badge success">Protective</span>
+                        <p>Tech support & online security services</p>
+                    </div>
+                    <div class="risk-item">
+                        <span class="badge success">Protective</span>
+                        <p>Long tenure & automatic payments</p>
                     </div>
                 </div>
-            </div>
+
+                <!-- Results Card -->
+                <div class="result-card" id="resultCard">
+                    <h3><span class="icon">📊</span> Prediction Results</h3>
+
+                    <div class="probability-section">
+                        <div class="probability-label">
+                            <span>Churn Probability</span>
+                            <span class="probability-value" id="probabilityValue">0%</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                    </div>
+
+                    <div class="risk-badge-container">
+                        <span class="risk-badge" id="riskBadge">LOW RISK</span>
+                    </div>
+
+                    <div class="recommendation-box">
+                        <h4>💡 Recommended Action</h4>
+                        <p id="recommendation">Loading...</p>
+                    </div>
+                </div>
+            </aside>
         </div>
     </div>
 </div>
 
 <script>
-async function submitPrediction(event) {
-    event.preventDefault();
-    console.log('Form submitted');
-    
-    const form = document.getElementById('predictionForm');
-    const btn = document.getElementById('predictBtn');
-    const resultBox = document.getElementById('resultBox');
-    
-    // Validate form
-    if (!form.checkValidity()) {
-        alert('Please fill in all required fields correctly.');
-        return;
-    }
-    
-    // Disable button and show loading state
-    btn.disabled = true;
-    btn.textContent = 'Analyzing customer data...';
-    btn.style.opacity = '0.7';
-    
-    try {
-        // Collect form data
-        const formData = new FormData(form);
-        const data = {};
-        
-        formData.forEach((value, key) => {
-            data[key] = isNaN(value) ? value : parseFloat(value);
-        });
-        
-        console.log('Sending data:', data);
-        
-        // Send to API with timeout
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-        
-        const response = await fetch('/api/predict', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data),
-            signal: controller.signal
-        });
-        
-        clearTimeout(timeoutId);
-        console.log('Response status:', response.status);
-        
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Prediction failed. Please try again.');
+    // Form submission
+    document.getElementById('predictionForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const form = e.target;
+        const btn = document.getElementById('predictBtn');
+        const overlay = document.getElementById('loadingOverlay');
+        const resultCard = document.getElementById('resultCard');
+
+        // Validate
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
         }
-        
-        const result = await response.json();
-        console.log('Result:', result);
-        
-        // Scroll to results
-        setTimeout(() => {
-            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }, 100);
-        
-        // Display results
-        displayPredictionResult(result);
-        
-    } catch (error) {
-        console.error('Error:', error);
-        if (error.name === 'AbortError') {
-            alert('Request timeout. Please check your connection and try again.');
-        } else {
+
+        // Show loading
+        overlay.classList.add('show');
+        btn.disabled = true;
+
+        try {
+            // Collect data
+            const formData = new FormData(form);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = isNaN(value) ? value : parseFloat(value);
+            });
+
+            // API call
+            const response = await fetch('/api/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.error || 'Prediction failed');
+            }
+
+            const result = await response.json();
+
+            // Display results
+            displayResults(result);
+
+        } catch (error) {
             alert('Error: ' + error.message);
+        } finally {
+            overlay.classList.remove('show');
+            btn.disabled = false;
         }
-    } finally {
-        btn.disabled = false;
-        btn.textContent = 'Predict Churn';
-        btn.style.opacity = '1';
-    }
-}
-
-function displayPredictionResult(result) {
-    const probability = (result.churn_probability * 100).toFixed(2);
-    
-    // Show result box
-    document.getElementById('resultBox').style.display = 'block';
-    
-    // Update probability bar
-    const bar = document.getElementById('probabilityBar');
-    bar.style.width = '0%';
-    setTimeout(() => {
-        bar.style.transition = 'width 0.6s ease';
-        bar.style.width = probability + '%';
-        bar.textContent = probability + '%';
-    }, 50);
-    
-    // Update risk level
-    const riskLevel = document.getElementById('riskLevel');
-    const riskMap = {
-        'LOW': { bg: '#22c55e', text: 'LOW RISK - Customer likely to stay' },
-        'MEDIUM': { bg: '#fbbf24', text: 'MEDIUM RISK - Monitor closely' },
-        'HIGH': { bg: '#ef4444', text: 'HIGH RISK - Take action now' }
-    };
-    
-    const riskStyle = riskMap[result.risk_category] || riskMap['MEDIUM'];
-    riskLevel.style.background = riskStyle.bg;
-    riskLevel.textContent = riskStyle.text;
-    riskLevel.style.fontSize = '0.95rem';
-    
-    // Update recommendation
-    document.getElementById('recommendation').textContent = result.suggestion;
-    
-    console.log('Results displayed');
-}
-
-function loadExample() {
-    const example = {
-        customerID: 'CUST-001-2025',
-        gender: 'Male',
-        SeniorCitizen: '0',
-        Partner: 'Yes',
-        Dependents: 'No',
-        PhoneService: 'Yes',
-        MultipleLines: 'No',
-        InternetService: 'Fiber optic',
-        OnlineSecurity: 'No',
-        OnlineBackup: 'Yes',
-        DeviceProtection: 'No',
-        TechSupport: 'No',
-        StreamingTV: 'No',
-        StreamingMovies: 'No',
-        Contract: 'Month-to-month',
-        PaperlessBilling: 'Yes',
-        PaymentMethod: 'Electronic check',
-        tenure: '24',
-        MonthlyCharges: '65.50',
-        TotalCharges: '1570.00'
-    };
-    
-    Object.entries(example).forEach(([key, value]) => {
-        const field = document.querySelector(`[name="${key}"]`);
-        if (field) field.value = value;
     });
-    
-    alert('Example data loaded. Click "Predict Churn" to test.');
-}
+
+    function displayResults(result) {
+        const probability = (result.churn_probability * 100).toFixed(1);
+        const resultCard = document.getElementById('resultCard');
+        const probabilityValue = document.getElementById('probabilityValue');
+        const progressFill = document.getElementById('progressFill');
+        const riskBadge = document.getElementById('riskBadge');
+        const recommendation = document.getElementById('recommendation');
+
+        // Show card
+        resultCard.classList.add('show');
+
+        // Animate probability
+        probabilityValue.textContent = probability + '%';
+        setTimeout(() => {
+            progressFill.style.width = probability + '%';
+        }, 100);
+
+        // Risk badge
+        riskBadge.className = 'risk-badge';
+        if (result.risk_category === 'LOW') {
+            riskBadge.classList.add('low');
+            riskBadge.textContent = '✓ LOW RISK';
+        } else if (result.risk_category === 'MEDIUM') {
+            riskBadge.classList.add('medium');
+            riskBadge.textContent = '⚠ MEDIUM RISK';
+        } else {
+            riskBadge.classList.add('high');
+            riskBadge.textContent = '🚨 HIGH RISK';
+        }
+
+        // Recommendation
+        recommendation.textContent = result.suggestion;
+
+        // Scroll to results on mobile
+        setTimeout(() => {
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 300);
+    }
+
+    function loadExample() {
+        const example = {
+            customerID: 'CUST-001-2025',
+            gender: 'Male',
+            SeniorCitizen: '0',
+            Partner: 'Yes',
+            Dependents: 'No',
+            PhoneService: 'Yes',
+            MultipleLines: 'No',
+            InternetService: 'Fiber optic',
+            OnlineSecurity: 'No',
+            OnlineBackup: 'Yes',
+            DeviceProtection: 'No',
+            TechSupport: 'No',
+            StreamingTV: 'No',
+            StreamingMovies: 'No',
+            Contract: 'Month-to-month',
+            PaperlessBilling: 'Yes',
+            PaymentMethod: 'Electronic check',
+            tenure: '24',
+            MonthlyCharges: '65.50',
+            TotalCharges: '1570.00'
+        };
+
+        Object.entries(example).forEach(([key, value]) => {
+            const field = document.querySelector(`[name="${key}"]`);
+            if (field) field.value = value;
+        });
+
+        // Visual feedback
+        const btn = document.querySelector('.btn-success');
+        btn.innerHTML = '<span>✓ Loaded!</span>';
+        setTimeout(() => {
+            btn.innerHTML = '<span>📝 Load Example</span>';
+        }, 1500);
+    }
 </script>
 
 {% endblock %}
