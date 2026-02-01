@@ -133,6 +133,12 @@ We validated the model using a 20% hold-out test set.
 ### **Karthik Vana**
 **Data Engineer | ML Engineer | AI Engineer**
 
+<p align="center">
+  <a href="https://portfolio-v-smoky.vercel.app/" target="_blank">
+    <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&pause=1000&color=00F7FF&center=true&vCenter=true&width=500&lines=😎+Visit+My+Portfolio;+❤️Click+Here+to+Explore" />
+  </a>
+</p>
+
 <a href="https://linkedin.com/in/karthik-vana"><img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin&logoColor=white"></a>
 <a href="https://github.com/karthik-vana"><img src="https://img.shields.io/badge/GitHub-Follow-black?style=for-the-badge&logo=github&logoColor=white"></a>
 
