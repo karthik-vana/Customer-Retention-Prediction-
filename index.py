@@ -1,58 +1,27 @@
 """
-Vercel Serverless Function Entry Point
-Minimal Flask app for Customer Churn Prediction
+Flask Web Application - Customer Churn Prediction
+Vercel Deployment Entry Point
 """
 
-from flask import Flask, render_template, request, jsonify, make_response
+from flask import Flask, render_template, request, jsonify
 import pickle
 import numpy as np
-import os
 import json
 from pathlib import Path
-import traceback
 
-# Get the project root from the api folder
-# In Vercel serverless environment
-CURRENT_DIR = Path(__file__).resolve().parent  # This is the api folder
-PROJECT_ROOT = CURRENT_DIR.parent  # This is the project root
+# Get the project root
+PROJECT_ROOT = Path(__file__).resolve().parent
 APP_DIR = PROJECT_ROOT / 'app'
 
-# Debug info
-DEBUG_INFO = {
-    'current_dir': str(CURRENT_DIR),
-    'project_root': str(PROJECT_ROOT),
-    'app_dir': str(APP_DIR),
-    'templates_exists': (APP_DIR / 'templates').exists(),
-    'static_exists': (APP_DIR / 'static').exists(),
-}
-
-# Fallback - check if app folder exists, if not try different paths
-if not APP_DIR.exists():
-    # Try relative to current working directory
-    APP_DIR = Path('.') / 'app'
-    DEBUG_INFO['fallback_app_dir'] = str(APP_DIR.resolve())
-    DEBUG_INFO['fallback_app_exists'] = APP_DIR.exists()
-
-# Create Flask app
-try:
-    app = Flask(__name__, 
-                template_folder=str((APP_DIR / 'templates').resolve()),
-                static_folder=str((APP_DIR / 'static').resolve()))
-    app.secret_key = 'telecom_churn_prediction_2025'
-    DEBUG_INFO['flask_init'] = 'success'
-except Exception as e:
-    app = Flask(__name__)
-    app.secret_key = 'telecom_churn_prediction_2025'
-    DEBUG_INFO['flask_init'] = f'fallback: {str(e)}'
+# Create Flask app with proper paths
+app = Flask(__name__, 
+            template_folder=str(APP_DIR / 'templates'),
+            static_folder=str(APP_DIR / 'static'))
+app.secret_key = 'telecom_churn_prediction_2025'
 
 # Load model and scaler
 MODEL_PATH = PROJECT_ROOT / 'models' / 'random_forest_tuned.pkl'
 SCALER_PATH = PROJECT_ROOT / 'scalers' / 'Robust_Scaler.pkl'
-
-DEBUG_INFO['model_path'] = str(MODEL_PATH)
-DEBUG_INFO['model_exists'] = MODEL_PATH.exists()
-DEBUG_INFO['scaler_path'] = str(SCALER_PATH)
-DEBUG_INFO['scaler_exists'] = SCALER_PATH.exists()
 
 model = None
 scaler = None
@@ -63,22 +32,16 @@ try:
     if MODEL_PATH.exists():
         with open(MODEL_PATH, 'rb') as f:
             model = pickle.load(f)
-        DEBUG_INFO['model_loaded'] = True
-    else:
-        DEBUG_INFO['model_loaded'] = 'file not found'
 except Exception as e:
-    DEBUG_INFO['model_loaded'] = f'error: {str(e)}'
+    print(f"Model error: {e}")
 
 # Load scaler
 try:
     if SCALER_PATH.exists():
         with open(SCALER_PATH, 'rb') as f:
             scaler = pickle.load(f)
-        DEBUG_INFO['scaler_loaded'] = True
-    else:
-        DEBUG_INFO['scaler_loaded'] = 'file not found'
 except Exception as e:
-    DEBUG_INFO['scaler_loaded'] = f'error: {str(e)}'
+    print(f"Scaler error: {e}")
 
 # Load feature order
 feature_file = PROJECT_ROOT / 'models' / 'feature_names.json'
@@ -107,34 +70,15 @@ FEATURE_DEFINITIONS = {
 
 @app.route('/')
 def index():
-    try:
-        return render_template('index.html')
-    except Exception as e:
-        # Fallback to a simple HTML response
-        return make_response(f"""<!DOCTYPE html>
-<html>
-<head><title>Customer Retention Prediction</title></head>
-<body>
-<h1>Customer Retention Prediction</h1>
-<p>Template error: {str(e)}</p>
-<p><a href="/health">Check Health</a></p>
-<p><a href="/predict">Make Prediction</a></p>
-</body>
-</html>""", 200)
+    return render_template('index.html')
 
 @app.route('/overview')
 def overview():
-    try:
-        return render_template('overview.html')
-    except Exception as e:
-        return jsonify({'error': 'Template not found', 'details': str(e)}), 500
+    return render_template('overview.html')
 
 @app.route('/predict')
 def predict_page():
-    try:
-        return render_template('predict.html', features=FEATURE_DEFINITIONS)
-    except Exception as e:
-        return jsonify({'error': 'Template not found', 'details': str(e)}), 500
+    return render_template('predict.html', features=FEATURE_DEFINITIONS)
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
@@ -241,56 +185,29 @@ def predict():
 
 @app.route('/results')
 def results():
-    try:
-        return render_template('results.html')
-    except Exception as e:
-        return jsonify({'error': 'Template not found', 'details': str(e)}), 500
+    return render_template('results.html')
 
 @app.route('/about')
 def about():
-    try:
-        return render_template('about.html')
-    except Exception as e:
-        return jsonify({'error': 'Template not found', 'details': str(e)}), 500
+    return render_template('about.html')
 
 @app.route('/health')
 def health():
     return jsonify({
         'status': 'healthy',
         'model_loaded': model is not None,
-        'scaler_loaded': scaler is not None,
-        'debug': DEBUG_INFO
+        'scaler_loaded': scaler is not None
     })
-
-@app.route('/debug')
-def debug():
-    # List directory contents to help debug
-    try:
-        current_files = list(CURRENT_DIR.iterdir()) if CURRENT_DIR.exists() else []
-        parent_files = list(PROJECT_ROOT.iterdir()) if PROJECT_ROOT.exists() else []
-        app_files = list(APP_DIR.iterdir()) if APP_DIR.exists() else []
-        
-        return jsonify({
-            'current_dir': str(CURRENT_DIR),
-            'current_files': [str(f.name) for f in current_files],
-            'parent_dir': str(PROJECT_ROOT),
-            'parent_files': [str(f.name) for f in parent_files],
-            'app_dir': str(APP_DIR),
-            'app_files': [str(f.name) for f in app_files],
-            'cwd': os.getcwd(),
-            'cwd_files': os.listdir('.') if os.path.exists('.') else []
-        })
-    except Exception as e:
-        return jsonify({'error': str(e), 'traceback': traceback.format_exc()})
 
 @app.errorhandler(404)
 def not_found(error):
-    return jsonify({'error': 'Not found', 'path': request.path}), 404
+    return render_template('index.html'), 200
 
 @app.errorhandler(500)
 def server_error(error):
-    return jsonify({
-        'error': 'Internal Server Error',
-        'details': str(error),
-        'traceback': traceback.format_exc()
-    }), 500
+    return jsonify({'error': 'Internal Server Error'}), 500
+
+if __name__ == '__main__':
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
