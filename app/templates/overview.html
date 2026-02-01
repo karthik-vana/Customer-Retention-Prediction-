@@ -1,276 +1,241 @@
 {% extends "base.html" %}
 
-{% block title %}Technology - TelecomAI{% endblock %}
+{% block title %}Project Overview - TelecomAI{% endblock %}
 
 {% block content %}
 <style>
-    .tech-header {
-        padding: 100px 20px 60px;
+    .overview-hero {
         text-align: center;
-        background: radial-gradient(circle at 50% 100%, #1e293b 0%, var(--bg-dark) 100%);
-        border-bottom: 1px solid var(--border);
+        padding: 50px 20px;
+        background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, var(--bg-dark) 80%);
     }
 
-    .tech-header h1 {
-        font-size: 3.5rem;
-        margin-bottom: 20px;
+    .overview-hero h1 {
+        font-size: 3rem;
+        margin-bottom: 30px;
         color: white;
     }
 
-    .subtitle {
-        font-size: 1.25rem;
-        color: var(--text-muted);
-        max-width: 700px;
-        margin: 0 auto;
-    }
-
-    .pipeline-section {
-        padding: 80px 20px;
+    /* PIPELINE GRID STYLES */
+    .pipeline-wrapper {
         max-width: 1200px;
-        margin: 0 auto;
+        margin: 0 auto 60px;
+        padding: 40px;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        backdrop-filter: blur(10px);
     }
 
-    .pipeline-container {
+    .pipeline-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+
+    .pipeline-card {
+        padding: 24px 16px;
+        border-radius: 12px;
+        text-align: center;
+        color: white;
         display: flex;
         flex-direction: column;
-        gap: 60px;
-        position: relative;
-    }
-
-    .pipeline-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 40px;
-        width: 2px;
-        background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
-        opacity: 0.3;
-        z-index: 0;
-    }
-
-    .pipeline-step {
-        display: flex;
-        gap: 40px;
-        position: relative;
-        z-index: 1;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: slideUp 0.6s ease-out forwards;
-    }
-
-    .step-number {
-        width: 80px;
-        height: 80px;
-        flex-shrink: 0;
-        background: var(--bg-card);
-        border: 2px solid var(--border);
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        font-size: 2rem;
-        font-weight: 700;
-        color: var(--primary);
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        transition: all 0.3s ease;
+        align-items: center;
+        min-height: 140px;
+        transition: transform 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     }
 
-    .pipeline-step:hover .step-number {
-        border-color: var(--primary);
-        box-shadow: 0 0 30px var(--primary-glow);
-        transform: scale(1.05);
+    .pipeline-card:hover {
+        transform: translateY(-5px);
+        filter: brightness(1.1);
     }
 
-    .step-content {
-        flex: 1;
-        background: rgba(30, 41, 59, 0.4);
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        padding: 32px;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-    }
-
-    .step-content:hover {
-        background: rgba(30, 41, 59, 0.6);
-        border-color: var(--primary);
-        transform: translateX(10px);
+    .step-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        opacity: 0.9;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .step-title {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 12px;
-        display: flex;
-        align-items: center;
-        gap: 12px;
+        font-size: 1.4rem;
+        font-weight: 800;
     }
 
-    .tech-badge {
-        font-size: 0.8rem;
-        padding: 4px 12px;
-        border-radius: 100px;
-        background: rgba(255, 255, 255, 0.1);
-        color: var(--accent);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .step-description {
+    .step-subtext {
+        margin-top: 15px;
+        font-size: 0.9rem;
         color: var(--text-muted);
-        line-height: 1.7;
-        margin-bottom: 20px;
-    }
-
-    .metric-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 16px;
-        margin-top: 20px;
-    }
-
-    .metric-card {
-        background: rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        border-radius: 12px;
         text-align: center;
     }
 
-    .metric-val {
-        display: block;
-        font-size: 1.25rem;
-        font-weight: 700;
-        color: white;
-        margin-bottom: 4px;
+    /* Custom Gradients matching the image */
+    .bg-eda {
+        background: linear-gradient(135deg, #5b4dd1, #483bc9);
     }
 
-    .metric-label {
-        font-size: 0.85rem;
-        color: var(--text-muted);
+    .bg-eng {
+        background: linear-gradient(135deg, #a855f7, #d8b4fe);
+        color: #fff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
 
-    @keyframes slideUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
+    .bg-sel {
+        background: linear-gradient(135deg, #ec4899, #f43f5e);
+    }
+
+    .bg-bal {
+        background: linear-gradient(135deg, #d946ef, #6366f1);
+    }
+
+    .bg-sca {
+        background: linear-gradient(135deg, #06b6d4, #22d3ee);
+    }
+
+    .bg-tra {
+        background: linear-gradient(135deg, #10b981, #34d399);
+    }
+
+    .bg-tun {
+        background: linear-gradient(135deg, #34d399, #10b981);
+    }
+
+    .bg-dep {
+        background: linear-gradient(135deg, #3b82f6, #6366f1);
+    }
+
+    .tech-stack {
+        max-width: 1000px;
+        margin: 60px auto;
+        text-align: center;
+    }
+
+    .tech-badges {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .tech-badge {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 16px;
+        border-radius: 100px;
+        color: var(--accent);
+        font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+        .pipeline-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
-    @media (max-width: 768px) {
-        .pipeline-container::before {
-            left: 29px;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
-        }
-
-        .pipeline-step {
-            gap: 20px;
-        }
-
-        .tech-header h1 {
-            font-size: 2.5rem;
+    @media (max-width: 500px) {
+        .pipeline-grid {
+            grid-template-columns: 1fr;
         }
     }
 </style>
 
-<div class="tech-header">
-    <h1>Architecture</h1>
-    <p class="subtitle">A deep dive into the machine learning pipeline powering our retention intelligence engine.</p>
+<div class="overview-hero">
+    <h1>Our 7-Step Pipeline</h1>
+    <p style="color: var(--text-muted);">A comprehensive look at our Machine Learning workflow</p>
 </div>
 
-<div class="pipeline-section">
-    <div class="pipeline-container">
-        <!-- Step 1 -->
-        <div class="pipeline-step" style="animation-delay: 0.1s;">
-            <div class="step-number">01</div>
-            <div class="step-content">
-                <div class="step-title">
-                    Data Ingestion & Cleaning
-                    <span class="tech-badge">Pandas</span>
-                </div>
-                <p class="step-description">
-                    Raw telemetry and billing data is ingested, cleansed, and normalized. We handle missing values,
-                    outlier detection, and type casting to ensure high-quality input for the model.
-                </p>
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <span class="metric-val">7043</span>
-                        <span class="metric-label">Training Samples</span>
-                    </div>
-                </div>
+<div class="pipeline-wrapper">
+    <!-- Row 1 -->
+    <div class="pipeline-grid">
+        <div class="col">
+            <div class="pipeline-card bg-eda">
+                <span class="step-label">Step 1</span>
+                <span class="step-title">EDA</span>
             </div>
+            <p class="step-subtext">Exploratory Data Analysis</p>
         </div>
 
-        <!-- Step 2 -->
-        <div class="pipeline-step" style="animation-delay: 0.2s;">
-            <div class="step-number">02</div>
-            <div class="step-content">
-                <div class="step-title">
-                    Feature Engineering
-                    <span class="tech-badge">NumPy</span>
-                </div>
-                <p class="step-description">
-                    Transforming raw fields into predictive signals. We apply One-Hot Encoding for categorical variables
-                    like 'PaymentMethod' and 'Contract', and scale numerical features using RobustScaler to handle
-                    skewed distributions.
-                </p>
+        <div class="col">
+            <div class="pipeline-card bg-eng">
+                <span class="step-label">Step 2</span>
+                <span class="step-title">Engineering</span>
             </div>
+            <p class="step-subtext">Feature Engineering</p>
         </div>
 
-        <!-- Step 3 -->
-        <div class="pipeline-step" style="animation-delay: 0.3s;">
-            <div class="step-number">03</div>
-            <div class="step-content">
-                <div class="step-title">
-                    Model Training
-                    <span class="tech-badge">Scikit-Learn</span>
-                </div>
-                <p class="step-description">
-                    We utilize an ensemble <strong>Random Forest Classifier</strong> tuned via GridSearchCV. The model
-                    is trained on balanced classes using SMOTE to prevent bias towards majority classes.
-                </p>
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <span class="metric-val">100</span>
-                        <span class="metric-label">Decision Trees</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-val">Gini</span>
-                        <span class="metric-label">Impurity Criterion</span>
-                    </div>
-                </div>
+        <div class="col">
+            <div class="pipeline-card bg-sel">
+                <span class="step-label">Step 3</span>
+                <span class="step-title">Selection</span>
             </div>
+            <p class="step-subtext">Feature Selection</p>
         </div>
 
-        <!-- Step 4 -->
-        <div class="pipeline-step" style="animation-delay: 0.4s;">
-            <div class="step-number">04</div>
-            <div class="step-content">
-                <div class="step-title">
-                    Inference Engine
-                    <span class="tech-badge">Flask/Serverless</span>
-                </div>
-                <p class="step-description">
-                    The model is serialized and deployed on a serverless Vercel runtime. It accepts JSON payloads,
-                    preprocesses them in real-time using the saved scaler artifacts, and returns sub-second predictions.
-                </p>
-                <div class="metric-grid">
-                    <div class="metric-card">
-                        <span class="metric-val">~120ms</span>
-                        <span class="metric-label">Avg Latency</span>
-                    </div>
-                    <div class="metric-card">
-                        <span class="metric-val">99.9%</span>
-                        <span class="metric-label">Uptime</span>
-                    </div>
-                </div>
+        <div class="col">
+            <div class="pipeline-card bg-bal">
+                <span class="step-label">Step 4</span>
+                <span class="step-title">Balancing</span>
             </div>
+            <p class="step-subtext">Data Balancing (SMOTE)</p>
         </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="pipeline-grid">
+        <div class="col">
+            <div class="pipeline-card bg-sca">
+                <span class="step-label">Step 5</span>
+                <span class="step-title">Scaling</span>
+            </div>
+            <p class="step-subtext">Feature Scaling</p>
+        </div>
+
+        <div class="col">
+            <div class="pipeline-card bg-tra">
+                <span class="step-label">Step 6</span>
+                <span class="step-title">Training</span>
+            </div>
+            <p class="step-subtext">Model Training (Random Forest)</p>
+        </div>
+
+        <div class="col">
+            <div class="pipeline-card bg-tun">
+                <span class="step-label">Step 6B</span>
+                <span class="step-title">Tuning</span>
+            </div>
+            <p class="step-subtext">Hyperparameter Tuning</p>
+        </div>
+
+        <div class="col">
+            <div class="pipeline-card bg-dep">
+                <span class="step-label">Step 7</span>
+                <span class="step-title">Deployment</span>
+            </div>
+            <p class="step-subtext">Production Ready (Vercel)</p>
+        </div>
+    </div>
+</div>
+
+<div class="tech-stack">
+    <h2 style="color: white; margin-bottom: 20px;">Technology Stack</h2>
+    <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">
+        We utilized a robust stack of Python libraries and cloud infrastructure to build this end-to-end solution.
+    </p>
+    <div class="tech-badges">
+        <span class="tech-badge">Python 3.9+</span>
+        <span class="tech-badge">Flask</span>
+        <span class="tech-badge">Scikit-Learn</span>
+        <span class="tech-badge">Pandas</span>
+        <span class="tech-badge">NumPy</span>
+        <span class="tech-badge">SMOTE</span>
+        <span class="tech-badge">Vercel</span>
+        <span class="tech-badge">HTML5/CSS3</span>
     </div>
 </div>
 {% endblock %}
