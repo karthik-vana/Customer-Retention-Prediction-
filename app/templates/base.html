@@ -254,13 +254,13 @@
     <!-- Navigation -->
     <nav class="navbar">
         <a href="/" class="nav-brand">
-            <span style="font-size: 1.8rem;">⚡</span> TelecomAI
+            <span style="font-size: 1.8rem;">⚡</span> TelecomAI Intelligence Platform
         </a>
 
         <div class="nav-links">
-            <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Platform</a>
-            <a href="/overview" class="nav-link {% if request.path == '/overview' %}active{% endif %}">Technology</a>
-            <a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">Company</a>
+            <a href="/overview" class="nav-link {% if request.path == '/overview' %}active{% endif %}">Overview</a>
+            <a href="/about" class="nav-link {% if request.path == '/about' %}active{% endif %}">About Project</a>
+            <a href="/predict" class="nav-link {% if request.path == '/predict' %}active{% endif %}">Predict Churn</a>
         </div>
 
         <a href="/predict" class="nav-btn">Launch Console →</a>

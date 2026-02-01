@@ -46,6 +46,7 @@
         min-height: 140px;
         transition: transform 0.3s ease;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
     }
 
     .pipeline-card:hover {
@@ -74,7 +75,7 @@
         text-align: center;
     }
 
-    /* Custom Gradients matching the image */
+    /* Custom Gradients matching the image using classes */
     .bg-eda {
         background: linear-gradient(135deg, #5b4dd1, #483bc9);
     }
@@ -143,17 +144,108 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 2000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .modal-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+
+    .info-modal {
+        background: #0f172a;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 40px;
+        width: 90%;
+        max-width: 600px;
+        position: relative;
+        transform: scale(0.9);
+        transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-overlay.active .info-modal {
+        transform: scale(1);
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        color: white;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+    }
+
+    .modal-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-header {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-title {
+        font-size: 1.8rem;
+        color: white;
+        margin-bottom: 8px;
+    }
+
+    .modal-subtitle {
+        color: var(--accent);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .modal-body {
+        color: var(--text-muted);
+        line-height: 1.7;
+        font-size: 1rem;
+    }
+
+    .modal-body ul {
+        padding-left: 20px;
+        margin-top: 15px;
+    }
+
+    .modal-body li {
+        margin-bottom: 8px;
+    }
 </style>
 
 <div class="overview-hero">
     <h1>Our 7-Step Pipeline</h1>
-    <p style="color: var(--text-muted);">A comprehensive look at our Machine Learning workflow</p>
+    <p style="color: var(--text-muted);">Click on any step below to see exactly what we did.</p>
 </div>
 
 <div class="pipeline-wrapper">
     <!-- Row 1 -->
     <div class="pipeline-grid">
-        <div class="col">
+        <div class="col" onclick="openModal('eda')">
             <div class="pipeline-card bg-eda">
                 <span class="step-label">Step 1</span>
                 <span class="step-title">EDA</span>
@@ -161,7 +253,7 @@
             <p class="step-subtext">Exploratory Data Analysis</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('engineering')">
             <div class="pipeline-card bg-eng">
                 <span class="step-label">Step 2</span>
                 <span class="step-title">Engineering</span>
@@ -169,7 +261,7 @@
             <p class="step-subtext">Feature Engineering</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('selection')">
             <div class="pipeline-card bg-sel">
                 <span class="step-label">Step 3</span>
                 <span class="step-title">Selection</span>
@@ -177,7 +269,7 @@
             <p class="step-subtext">Feature Selection</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('balancing')">
             <div class="pipeline-card bg-bal">
                 <span class="step-label">Step 4</span>
                 <span class="step-title">Balancing</span>
@@ -188,7 +280,7 @@
 
     <!-- Row 2 -->
     <div class="pipeline-grid">
-        <div class="col">
+        <div class="col" onclick="openModal('scaling')">
             <div class="pipeline-card bg-sca">
                 <span class="step-label">Step 5</span>
                 <span class="step-title">Scaling</span>
@@ -196,7 +288,7 @@
             <p class="step-subtext">Feature Scaling</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('training')">
             <div class="pipeline-card bg-tra">
                 <span class="step-label">Step 6</span>
                 <span class="step-title">Training</span>
@@ -204,7 +296,7 @@
             <p class="step-subtext">Model Training (Random Forest)</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('tuning')">
             <div class="pipeline-card bg-tun">
                 <span class="step-label">Step 6B</span>
                 <span class="step-title">Tuning</span>
@@ -212,7 +304,7 @@
             <p class="step-subtext">Hyperparameter Tuning</p>
         </div>
 
-        <div class="col">
+        <div class="col" onclick="openModal('deployment')">
             <div class="pipeline-card bg-dep">
                 <span class="step-label">Step 7</span>
                 <span class="step-title">Deployment</span>
@@ -238,4 +330,130 @@
         <span class="tech-badge">HTML5/CSS3</span>
     </div>
 </div>
+
+<!-- Detailed Modals -->
+<div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
+    <div class="info-modal">
+        <button class="modal-close" onclick="closeModal(event, true)">×</button>
+        <div class="modal-header">
+            <div class="modal-subtitle" id="mSubtitle">Step Details</div>
+            <h2 class="modal-title" id="mTitle">Title</h2>
+        </div>
+        <div class="modal-body" id="mBody">
+            Content goes here...
+        </div>
+    </div>
+</div>
+
+<script>
+    const stepsData = {
+        eda: {
+            title: "Exploratory Data Analysis",
+            subtitle: "Understanding the Dataset",
+            content: `
+                <p>We analyzed the Telco Customer Churn dataset (7043 rows) to uncover patterns:</p>
+                <ul>
+                    <li><strong>Target Variable:</strong> 26.5% of customers churned (imbalanced dataset).</li>
+                    <li><strong>Missing Values:</strong> Handled 11 total missing values in 'TotalCharges' by filling with the median.</li>
+                    <li><strong>Correlations:</strong> High correlation found between 'tenure' and 'TotalCharges'.</li>
+                    <li><strong>Insights:</strong> Fiber Optic users and Month-to-Month contracts showed significantly higher churn rates.</li>
+                </ul>`
+        },
+        engineering: {
+            title: "Feature Engineering",
+            subtitle: "Creating Predictive Signals",
+            content: `
+                <p>Transformed raw data into a machine-readable format:</p>
+                <ul>
+                    <li><strong>Categorical Encoding:</strong> Converted 'Gender', 'Partner', etc. to binary (0/1).</li>
+                    <li><strong>One-Hot Encoding:</strong> Applied to 'PaymentMethod', 'Contract', and 'InternetService' to handle multiple categories.</li>
+                    <li><strong>Binning:</strong> Grouped 'tenure' into cohorts (0-12 months, 12-24, etc.) to capture lifecycle trends.</li>
+                    <li><strong>Data Types:</strong> Fixed type mismatches for numeric columns.</li>
+                </ul>`
+        },
+        selection: {
+            title: "Feature Selection",
+            subtitle: "Optimizing for Performance",
+            content: `
+                <p>Removed redundant features to improve model efficiency and prevent overfitting:</p>
+                <ul>
+                    <li><strong>Multicollinearity:</strong> Dropped 'customerID' (irrelevant) and handled high correlation between 'MonthlyCharges' and 'TotalCharges'.</li>
+                    <li><strong>Importance Analysis:</strong> Used Random Forest Feature Importance to identify top drivers: Contract, Tenure, and Internet Service type.</li>
+                </ul>`
+        },
+        balancing: {
+            title: "Data Balancing",
+            subtitle: "Handling Class Imbalance",
+            content: `
+                <p>The original dataset was biased towards non-churners (73%). We fixed this using <strong>SMOTE</strong> (Synthetic Minority Over-sampling Technique):</p>
+                <ul>
+                    <li><strong>Method:</strong> Generated synthetic samples for the Churn class.</li>
+                    <li><strong>Result:</strong> Created a perfectly balanced 50/50 dataset for training, ensuring the model doesn't just predict "No Churn" to achieve high accuracy.</li>
+                </ul>`
+        },
+        scaling: {
+            title: "Feature Scaling",
+            subtitle: "Normalizing Numerical Data",
+            content: `
+                <p>Applied scaling to ensure all features contribute equally:</p>
+                <ul>
+                    <li><strong>Technique:</strong> Used <strong>RobustScaler</strong> instead of StandardScaler.</li>
+                    <li><strong>Why?</strong> RobustScaler uses the median and IQR (Interquartile Range), making it robust to outliers in the 'TotalCharges' column.</li>
+                    <li><strong>Outcome:</strong> Faster convergence during model training.</li>
+                </ul>`
+        },
+        training: {
+            title: "Model Training",
+            subtitle: "Algorithm Selection",
+            content: `
+                <p>We benchmarked multiple algorithms:</p>
+                <ul>
+                    <li><strong>Experimented with:</strong> Logistic Regression, SVM, Decision Trees, and Random Forest.</li>
+                    <li><strong>Winner:</strong> <strong>Random Forest Classifier</strong>.</li>
+                    <li><strong>Why?</strong> Best balance of bias-variance, handles non-linear relationships well, and provides feature importance.</li>
+                </ul>`
+        },
+        tuning: {
+            title: "Hyperparameter Tuning",
+            subtitle: "System Optimization",
+            content: `
+                <p>Can we do better? We optimized the Random Forest using <strong>RandomizedSearchCV</strong>:</p>
+                <ul>
+                    <li><strong>n_estimators:</strong> Increased to 100 for stability.</li>
+                    <li><strong>max_depth:</strong> Limited to prevent overfitting.</li>
+                    <li><strong>min_samples_split:</strong> Tuned to capture general patterns.</li>
+                    <li><strong>Accuracy:</strong> Improved f1-score for the minority class.</li>
+                </ul>`
+        },
+        deployment: {
+            title: "System Deployment",
+            subtitle: "Going Live on Vercel",
+            content: `
+                <p>The final step: bringing the model to the web.</p>
+                <ul>
+                    <li><strong>Serialization:</strong> Saved model & scaler using Pickle (.pkl).</li>
+                    <li><strong>Backend:</strong> Built a Flask (Python) API for inference.</li>
+                    <li><strong>Frontend:</strong> Designed this premium interface using HTML5/CSS3.</li>
+                    <li><strong>Hosting:</strong> Deployed as a serverless function on Vercel for instant scaling.</li>
+                </ul>`
+        }
+    };
+
+    function openModal(stepKey) {
+        const modal = document.getElementById('modalOverlay');
+        const data = stepsData[stepKey];
+
+        document.getElementById('mTitle').textContent = data.title;
+        document.getElementById('mSubtitle').textContent = data.subtitle;
+        document.getElementById('mBody').innerHTML = data.content;
+
+        modal.classList.add('active');
+    }
+
+    function closeModal(e, force) {
+        if (force || e.target.classList.contains('modal-overlay')) {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+    }
+</script>
 {% endblock %}
