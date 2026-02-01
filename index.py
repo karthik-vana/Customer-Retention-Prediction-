@@ -146,25 +146,60 @@ def predict():
             
             if probability < 0.3:
                 risk_category = "LOW"
-                color = "#4CAF50"
+                color = "#10b981"
+                recommendation = "Customer is stable. Focus on loyalty and upselling premium services."
             elif probability < 0.6:
                 risk_category = "MEDIUM"
-                color = "#FF9800"
+                color = "#f59e0b"
+                recommendation = "Customer is at risk. Proactive engagement with discounts or upgrades is recommended."
             else:
                 risk_category = "HIGH"
-                color = "#F44336"
+                color = "#ef4444"
+                recommendation = "High churn risk! Immediate intervention with retention offers is critical."
             
-            suggestions = {
-                "LOW": "Customer is stable. Continue regular service & maintain satisfaction.",
-                "MEDIUM": "Monitor closely. Consider personalized retention offers and discounts.",
-                "HIGH": "Urgent action needed. Offer special promotions, upgrades, or premium support."
-            }
+            # Generate detailed strategies based on input data
+            strategies = []
             
+            # Contract strategies
+            if data.get('Contract') == 'Month-to-month':
+                strategies.append("Offer a 10% discount for upgrading to a 1-year contract.")
+            
+            # Internet Service strategies
+            if data.get('InternetService') == 'Fiber optic' and probability > 0.4:
+                strategies.append("Check for recent service outages or speed issues in their area.")
+            
+            # Payment strategies
+            if data.get('PaymentMethod') == 'Electronic check':
+                strategies.append("Incentivize switching to automatic credit card payments for reliability.")
+            
+            # Support strategies
+            if data.get('TechSupport') == 'No':
+                strategies.append("Bundle 3 months of free Premium Tech Support.")
+            
+            # Tenure specific
+            tenure = float(data.get('tenure', 0))
+            if tenure < 12 and probability > 0.5:
+                strategies.append("Send a 'Welcome' satisfaction survey and offer a personalized onboarding session.")
+            
+            # Fallback strategy
+            if not strategies:
+                strategies.append("Conduct a general satisfaction survey to identify pain points.")
+                strategies.append("Offer a customized retention plan based on usage patterns.")
+
+            # Analysis text
+            analysis = (
+                f"This customer has a {probability*100:.1f}% probability of churning. "
+                f"Their {data.get('Contract', 'current')} contract and {data.get('InternetService', 'internet')} service "
+                f"are key contributing factors to this risk score."
+            )
+
             return jsonify({
                 'churn_probability': float(probability),
                 'risk_category': risk_category,
                 'color': color,
-                'suggestion': suggestions[risk_category],
+                'suggestion': recommendation,
+                'strategies': strategies,
+                'analysis': analysis,
                 'success': True,
                 'model_accuracy': '87.5%'
             })

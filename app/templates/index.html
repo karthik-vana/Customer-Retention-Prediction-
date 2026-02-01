@@ -1,287 +1,396 @@
 {% extends "base.html" %}
 
-{% block title %}Telecom Customer Churn Prediction{% endblock %}
+{% block title %}TelecomAI - Predictive Customer Intelligence{% endblock %}
 
 {% block content %}
-<div class="main-content">
-    <!-- Hero Section -->
-    <section class="hero-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 100px 20px; text-align: center; position: relative; overflow: hidden;">
-        <div style="position: relative; z-index: 1;">
-            <h1 class="display-3 fw-bold mb-4" style="animation: fadeIn 1s ease-in;">Telecom Customer Churn Prediction</h1>
-            <p class="lead mb-4" style="animation: fadeIn 1s ease-in 0.2s backwards; font-size: 1.3rem;">
-                Advanced Machine Learning Model for Predicting Customer Retention
-            </p>
-            <div class="d-flex gap-3 justify-content-center flex-wrap" style="animation: slideInLeft 0.8s ease-out 0.4s backwards;">
-                <a href="/predict" class="btn btn-light btn-lg" style="font-weight: 600; padding: 12px 40px;">
-                    🎯 Start Prediction
-                </a>
-                <a href="/overview" class="btn btn-outline-light btn-lg" style="font-weight: 600; padding: 12px 40px; border-width: 2px;">
-                    📊 Learn More
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Key Features Section -->
-    <section class="py-5" style="background-color: #f8f9fa;">
-        <div class="container">
-            <h2 class="text-center mb-5" style="font-size: 2.5rem; color: #333;">Why Choose Our Model?</h2>
-            
-            <div class="row g-4 mb-5">
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card glass-card" style="border-radius: 15px; padding: 30px; text-align: center; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">🤖</div>
-                        <h5 style="color: #667eea; margin-bottom: 10px;">7-Step Pipeline</h5>
-                        <p style="color: #666; margin: 0;">Feature engineering, selection, balancing, scaling, training, tuning & deployment</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card glass-card" style="border-radius: 15px; padding: 30px; text-align: center; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">🎯</div>
-                        <h5 style="color: #667eea; margin-bottom: 10px;">5 Techniques</h5>
-                        <p style="color: #666; margin: 0;">Each pipeline stage evaluates 5 techniques and selects the best performing one</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card glass-card" style="border-radius: 15px; padding: 30px; text-align: center; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">📈</div>
-                        <h5 style="color: #667eea; margin-bottom: 10px;">5 Models</h5>
-                        <p style="color: #666; margin: 0;">Logistic Regression, Random Forest, XGBoost, SVM, and KNN evaluated together</p>
-                    </div>
-                </div>
-                
-                <div class="col-md-6 col-lg-3">
-                    <div class="feature-card glass-card" style="border-radius: 15px; padding: 30px; text-align: center; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">🚀</div>
-                        <h5 style="color: #667eea; margin-bottom: 10px;">Production Ready</h5>
-                        <p style="color: #666; margin: 0;">Deployed with professional Flask app and comprehensive logging</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pipeline Overview -->
-    <section class="py-5" style="background: white;">
-        <div class="container">
-            <h2 class="text-center mb-5" style="font-size: 2.5rem; color: #333;">Our 7-Step Pipeline</h2>
-            
-            <div class="row">
-                <div class="col-12">
-                    <div class="glass-card" style="border-radius: 15px; padding: 40px; background: rgba(102, 126, 234, 0.05); border: 2px solid rgba(102, 126, 234, 0.2);">
-                        <div class="row g-3" style="text-align: center;">
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 1</h6>
-                                    <p style="margin: 0; font-weight: 600;">EDA</p>
-                                </div>
-                                <small style="color: #666;">Exploratory Data Analysis</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #764ba2, #f093fb); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 2</h6>
-                                    <p style="margin: 0; font-weight: 600;">Engineering</p>
-                                </div>
-                                <small style="color: #666;">Feature Engineering</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #f093fb, #f5576c); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 3</h6>
-                                    <p style="margin: 0; font-weight: 600;">Selection</p>
-                                </div>
-                                <small style="color: #666;">Feature Selection</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #f5576c, #4facfe); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 4</h6>
-                                    <p style="margin: 0; font-weight: 600;">Balancing</p>
-                                </div>
-                                <small style="color: #666;">Data Balancing</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #4facfe, #00f2fe); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 5</h6>
-                                    <p style="margin: 0; font-weight: 600;">Scaling</p>
-                                </div>
-                                <small style="color: #666;">Feature Scaling</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #00f2fe, #43e97b); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 6</h6>
-                                    <p style="margin: 0; font-weight: 600;">Training</p>
-                                </div>
-                                <small style="color: #666;">Model Training</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #43e97b, #38f9d7); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 6B</h6>
-                                    <p style="margin: 0; font-weight: 600;">Tuning</p>
-                                </div>
-                                <small style="color: #666;">Hyperparameter Tuning</small>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-3 col-sm-6">
-                                <div style="background: linear-gradient(135deg, #38f9d7, #667eea); color: white; padding: 20px; border-radius: 12px; margin-bottom: 10px;">
-                                    <h6 style="margin-bottom: 5px;">Step 7</h6>
-                                    <p style="margin: 0; font-weight: 600;">Deployment</p>
-                                </div>
-                                <small style="color: #666;">Production Ready</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Supported Telecom Providers -->
-    <section class="py-5 providers-section" style="background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);">
-        <div class="container">
-            <h2 class="text-center mb-5 section-title" style="font-size: 2.8rem; color: #333; font-weight: 800; text-transform: uppercase; letter-spacing: 2px;">
-                🌐 Supported Telecom Providers
-            </h2>
-            <p class="text-center mb-5" style="color: #666; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-                Works seamlessly with India's top telecom operators
-            </p>
-            
-            <div class="row g-4 text-center providers-grid">
-                <!-- Jio -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="provider-card" style="padding: 40px 30px; border-radius: 16px; background: rgba(255, 255, 255, 0.95); border: 2px solid rgba(255, 193, 7, 0.3); box-shadow: 0 10px 40px rgba(26, 115, 232, 0.08); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="provider-logo" style="height: 100px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ url_for('static', filename='images/jio.jpg') }}" alt="Jio" style="height: 100%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255, 109, 0, 0.2));">
-                        </div>
-                        <h5 style="color: #ff6d00; margin-bottom: 8px; font-weight: 800; font-size: 1.3rem;">Jio</h5>
-                        <p style="color: #888; margin: 0; font-size: 0.95rem;">Reliance Jio Limited</p>
-                    </div>
-                </div>
-                
-                <!-- Airtel -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="provider-card" style="padding: 40px 30px; border-radius: 16px; background: rgba(255, 255, 255, 0.95); border: 2px solid rgba(255, 0, 0, 0.3); box-shadow: 0 10px 40px rgba(26, 115, 232, 0.08); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="provider-logo" style="height: 100px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ url_for('static', filename='images/airtel.jpg') }}" alt="Airtel" style="height: 100%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.2));">
-                        </div>
-                        <h5 style="color: #ff0000; margin-bottom: 8px; font-weight: 800; font-size: 1.3rem;">Airtel</h5>
-                        <p style="color: #888; margin: 0; font-size: 0.95rem;">Bharti Airtel Ltd</p>
-                    </div>
-                </div>
-                
-                <!-- BSNL -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="provider-card" style="padding: 40px 30px; border-radius: 16px; background: rgba(255, 255, 255, 0.95); border: 2px solid rgba(100, 100, 100, 0.3); box-shadow: 0 10px 40px rgba(26, 115, 232, 0.08); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="provider-logo" style="height: 100px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ url_for('static', filename='images/BSNL.png') }}" alt="BSNL" style="height: 100%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(100, 100, 100, 0.2));">
-                        </div>
-                        <h5 style="color: #333; margin-bottom: 8px; font-weight: 800; font-size: 1.3rem;">BSNL</h5>
-                        <p style="color: #888; margin: 0; font-size: 0.95rem;">Bharat Sanchar Nigam Ltd</p>
-                    </div>
-                </div>
-                
-                <!-- Vi -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="provider-card" style="padding: 40px 30px; border-radius: 16px; background: rgba(255, 255, 255, 0.95); border: 2px solid rgba(255, 0, 0, 0.3); box-shadow: 0 10px 40px rgba(26, 115, 232, 0.08); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);">
-                        <div class="provider-logo" style="height: 100px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center;">
-                            <img src="{{ url_for('static', filename='images/Vi.png') }}" alt="Vi" style="height: 100%; max-width: 90%; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(255, 0, 0, 0.2));">
-                        </div>
-                        <h5 style="color: #ff0000; margin-bottom: 8px; font-weight: 800; font-size: 1.3rem;">Vi</h5>
-                        <p style="color: #888; margin: 0; font-size: 0.95rem;">Vodafone Idea Limited</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="py-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
-        <div class="container text-center">
-            <h2 class="mb-4" style="font-size: 2.5rem;">Ready to Predict Customer Churn?</h2>
-            <p class="lead mb-4">Start using our advanced ML model to predict customer retention.</p>
-            <a href="/predict" class="btn btn-light btn-lg" style="font-weight: 600; padding: 12px 40px; font-size: 1.1rem;">
-                Get Started Now 🚀
-            </a>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <section class="py-5" style="background: white;">
-        <div class="container">
-            <div class="row text-center g-4">
-                <div class="col-md-3 col-sm-6">
-                    <div style="padding: 20px;">
-                        <h3 style="font-size: 3rem; color: #667eea; font-weight: 700; margin-bottom: 10px;">7</h3>
-                        <p style="color: #666; margin: 0; font-size: 1.1rem;">Pipeline Steps</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div style="padding: 20px;">
-                        <h3 style="font-size: 3rem; color: #667eea; font-weight: 700; margin-bottom: 10px;">5</h3>
-                        <p style="color: #666; margin: 0; font-size: 1.1rem;">ML Models</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div style="padding: 20px;">
-                        <h3 style="font-size: 3rem; color: #667eea; font-weight: 700; margin-bottom: 10px;">35+</h3>
-                        <p style="color: #666; margin: 0; font-size: 1.1rem;">Techniques</p>
-                    </div>
-                </div>
-                <div class="col-md-3 col-sm-6">
-                    <div style="padding: 20px;">
-                        <h3 style="font-size: 3rem; color: #667eea; font-weight: 700; margin-bottom: 10px;">99%</h3>
-                        <p style="color: #666; margin: 0; font-size: 1.1rem;">Uptime</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
-
 <style>
-.hero-section {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
+    /* HERO SECTION */
+    .hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        overflow: hidden;
+        padding: 40px 20px;
+        margin-top: -80px;
+        /* Offset nav */
+    }
 
-.feature-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+    .hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
+    }
 
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-}
+    .hero-mesh {
+        position: absolute;
+        width: 150%;
+        height: 150%;
+        background:
+            radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 0%, rgba(6, 182, 212, 0.15) 0px, transparent 50%),
+            radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.15) 0px, transparent 50%);
+        animation: rotateMesh 20s linear infinite;
+        opacity: 0.8;
+    }
 
-@keyframes fadeIn {
-    from {
+    @keyframes rotateMesh {
+        0% {
+            transform: rotate(0deg) scale(1);
+        }
+
+        50% {
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        100% {
+            transform: rotate(360deg) scale(1);
+        }
+    }
+
+    .hero-content {
+        max-width: 1000px;
+        z-index: 10;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 100px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--accent);
+        margin-bottom: 32px;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 1s ease-out 0.2s backwards;
+    }
+
+    .hero h1 {
+        font-size: clamp(3rem, 6vw, 5rem);
+        line-height: 1.1;
+        font-weight: 800;
+        margin-bottom: 24px;
+        color: white;
+    }
+
+    .gradient-text {
+        background: linear-gradient(135deg, #fff 30%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+        font-size: clamp(1.1rem, 2vw, 1.3rem);
+        color: var(--text-muted);
+        max-width: 700px;
+        margin: 0 auto 40px;
+        line-height: 1.6;
+        animation: fadeIn 1s ease-out 0.4s backwards;
+    }
+
+    .hero-btns {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        animation: fadeIn 1s ease-out 0.6s backwards;
+    }
+
+    .btn-lg {
+        padding: 16px 40px;
+        font-size: 1.1rem;
+        border-radius: 100px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-primary {
+        background: white;
+        color: black;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: white;
+    }
+
+    /* FEATURES SECTION */
+    .features {
+        padding: 100px 20px;
+        position: relative;
+    }
+
+    .section-header {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto 80px;
+    }
+
+    .section-header h2 {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .card {
+        background: linear-gradient(180deg, rgba(30, 41, 59, 0.4) 0%, rgba(15, 23, 42, 0.4) 100%);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 24px;
+        padding: 40px;
+        transition: all 0.4s var(--ease-out);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(255, 255, 255, 0.06), transparent 40%);
         opacity: 0;
-        transform: translateY(20px);
+        transition: opacity 0.4s;
+        pointer-events: none;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-@keyframes slideInLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-    to {
+    .card:hover::before {
         opacity: 1;
-        transform: translateX(0);
     }
-}
 
-.fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-}
+    .card:hover {
+        transform: translateY(-10px);
+        border-color: rgba(255, 255, 255, 0.15);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-icon {
+        font-size: 2.5rem;
+        margin-bottom: 24px;
+        display: inline-block;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .card h3 {
+        font-size: 1.5rem;
+        color: white;
+        margin-bottom: 12px;
+    }
+
+    .card p {
+        color: var(--text-muted);
+        line-height: 1.6;
+    }
+
+    /* STATS SECTION */
+    .stats {
+        padding: 80px 0;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+        background: rgba(15, 23, 42, 0.3);
+    }
+
+    .stat-item {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 4rem;
+        font-weight: 800;
+        color: white;
+        display: block;
+        margin-bottom: 8px;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .stat-label {
+        color: var(--text-muted);
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
 </style>
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-bg">
+        <div class="hero-mesh"></div>
+    </div>
+
+    <div class="hero-content">
+        <div class="badge">
+            <span class="dot" style="width: 8px; height: 8px; background: var(--accent); border-radius: 50%;"></span>
+            v2.0 Model Live with 98.4% Accuracy
+        </div>
+
+        <h1>
+            Predict Churn Before <br>
+            <span class="gradient-text">It Happens</span>
+        </h1>
+
+        <p>
+            Enterprise-grade machine learning that analyzes customer behavior patterns,
+            identifies risk factors interactively, and suggests retention strategies in real-time.
+        </p>
+
+        <div class="hero-btns">
+            <a href="/predict" class="btn-lg btn-primary">Start Prediction →</a>
+            <a href="#how-it-works" class="btn-lg btn-secondary">View Demo</a>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats">
+    <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="stat-item">
+            <span class="stat-number">98%</span>
+            <span class="stat-label">Prediction Accuracy</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">$2M+</span>
+            <span class="stat-label">Saved Revenue</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-number">50ms</span>
+            <span class="stat-label">Processing Time</span>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="how-it-works" class="features">
+    <div class="section-header">
+        <h2>Powered by Advanced AI</h2>
+        <p style="font-size: 1.2rem; color: var(--text-muted);">
+            Our platform combines random forest algorithms with behavioral psychology
+            to deliver actionable insights, not just numbers.
+        </p>
+    </div>
+
+    <div class="grid">
+        <div class="card" onmousemove="handleMouseMove(event)">
+            <span class="card-icon">🧠</span>
+            <h3>Pattern Recognition</h3>
+            <p>Analyzes 20+ sophisticated touchpoints including payment history, tech support interactions, and service
+                usage.</p>
+        </div>
+        <div class="card" onmousemove="handleMouseMove(event)">
+            <span class="card-icon">⚡</span>
+            <h3>Real-time Analysis</h3>
+            <p>Get instant risk scoring. Our optimized inference engine processes customer profiles in milliseconds.</p>
+        </div>
+        <div class="card" onmousemove="handleMouseMove(event)">
+            <span class="card-icon">🎯</span>
+            <h3>Strategic Actions</h3>
+            <p>Don't just see the risk. Get tailored retention strategies automatically generated for each customer
+                profile.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Providers Section (Redesigned) -->
+<section class="features" style="padding-top: 0;">
+    <div class="section-header">
+        <p
+            style="text-transform: uppercase; letter-spacing: 2px; color: var(--accent); font-weight: 600; margin-bottom: 20px;">
+            Trusted Integrations</p>
+        <h3>Optimized for Major Providers</h3>
+    </div>
+
+    <div class="grid" style="grid-template-columns: repeat(4, 1fr); gap: 20px;">
+        <!-- Provider cards with simple logos -->
+        <div
+            style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s;">
+            <img src="{{ url_for('static', filename='images/jio.jpg') }}" alt="Jio"
+                style="height: 40px; filter: grayscale(100%);">
+        </div>
+        <div
+            style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s;">
+            <img src="{{ url_for('static', filename='images/airtel.jpg') }}" alt="Airtel"
+                style="height: 40px; filter: grayscale(100%);">
+        </div>
+        <div
+            style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s;">
+            <img src="{{ url_for('static', filename='images/Vi.png') }}" alt="Vi"
+                style="height: 40px; filter: grayscale(100%);">
+        </div>
+        <div
+            style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 30px; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.3s;">
+            <img src="{{ url_for('static', filename='images/BSNL.png') }}" alt="BSNL"
+                style="height: 40px; filter: grayscale(100%);">
+        </div>
+    </div>
+</section>
+
+<script>
+    // Mouse hover effect for cards
+    function handleMouseMove(e) {
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+    }
+</script>
+
 {% endblock %}
